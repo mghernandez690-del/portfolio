@@ -7,28 +7,28 @@ export default function Home() {
   const [active, setActive] = useState("home");
 
   return (
-    <main className="h-screen text-white relative overflow-hidden bg-[#020617]">
+    <main className="h-screen bg-[#020617] text-white overflow-hidden relative">
 
-      {/* 🌌 BACKGROUND */}
+      {/* BACKGROUND */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute w-[600px] h-[600px] bg-blue-700/20 blur-[150px] top-[-100px] left-[-100px]" />
-        <div className="absolute w-[500px] h-[500px] bg-yellow-400/20 blur-[120px] bottom-[-100px] right-[-100px]" />
+        <div className="absolute w-[500px] h-[500px] bg-blue-500/20 blur-[120px] top-[-100px] left-[-100px]" />
+        <div className="absolute w-[400px] h-[400px] bg-yellow-400/20 blur-[100px] bottom-[-100px] right-[-100px]" />
       </div>
 
-      {/* 🔝 NAVBAR (DI GINALAW STYLE MO) */}
+      {/* NAVBAR */}
       <nav className="flex justify-center pt-6">
-        <div className="backdrop-blur-md bg-white/5 border border-white/10 px-6 py-2 rounded-full flex gap-8 text-sm">
+        <div className="bg-white/5 backdrop-blur-md border border-white/10 px-6 py-2 rounded-full flex gap-8 text-sm">
 
           {["home", "projects", "certs", "contact"].map((item) => (
             <button
               key={item}
               onClick={() => setActive(item)}
-              className="relative capitalize text-gray-300 hover:text-white transition"
+              className="relative text-gray-300 hover:text-white transition"
             >
               {item}
 
               {active === item && (
-                <span className="absolute left-0 -bottom-1 w-full h-[2px] bg-yellow-400 rounded"></span>
+                <span className="absolute left-0 -bottom-1 w-full h-[2px] bg-yellow-400"></span>
               )}
             </button>
           ))}
@@ -36,28 +36,27 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* 🧠 SCREEN SWITCH */}
+      {/* CONTENT */}
       <div className="h-[calc(100vh-80px)] flex items-center justify-center px-6">
 
         <AnimatePresence mode="wait">
 
-          {/* 🏠 HOME */}
           {active === "home" && (
             <motion.div
               key="home"
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -40 }}
-              className="max-w-6xl w-full flex flex-col md:flex-row items-center justify-between gap-16"
+              exit={{ opacity: 0 }}
+              className="flex flex-col md:flex-row items-center gap-16 max-w-6xl w-full"
             >
 
               {/* TEXT */}
-              <div className="max-w-xl">
+              <div>
                 <p className="text-gray-400 mb-2">Hello, I'm</p>
 
-                <h1 className="text-6xl font-bold mb-4 leading-tight">
+                <h1 className="text-6xl font-bold mb-4">
                   MG{" "}
-                  <span className="bg-gradient-to-r from-blue-400 to-yellow-400 text-transparent bg-clip-text">
+                  <span className="bg-gradient-to-r from-blue-400 to-yellow-400 bg-clip-text text-transparent">
                     HERNANDEZ
                   </span>
                 </h1>
@@ -72,36 +71,27 @@ export default function Home() {
 
                 <button
                   onClick={() => setActive("projects")}
-                  className="px-6 py-2 border border-white/20 rounded-lg hover:bg-white/10 transition"
+                  className="px-6 py-2 border border-white/20 rounded-lg hover:bg-white/10"
                 >
                   View Work
                 </button>
               </div>
 
-              {/* 🔥 PREMIUM PROFILE */}
-              <div className="relative group flex items-center justify-center">
+              {/* PROFILE */}
+              <div className="relative group">
 
-                {/* GLOW */}
-                <div className="absolute w-[320px] h-[420px] bg-gradient-to-br from-blue-500/20 via-yellow-400/10 to-blue-700/20 blur-3xl opacity-70 group-hover:opacity-100 transition duration-500"></div>
+                <div className="absolute w-[320px] h-[420px] bg-gradient-to-br from-blue-500/20 to-yellow-400/20 blur-3xl"></div>
 
-                {/* FLOAT */}
                 <div className="relative animate-float">
 
-                  {/* BACK GLASS */}
-                  <div className="absolute inset-0 rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/10 scale-105"></div>
+                  <div className="absolute inset-0 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 scale-105"></div>
 
-                  {/* CARD */}
-                  <div className="relative rounded-3xl p-[2px] bg-gradient-to-br from-white/10 to-white/5">
+                  <div className="relative rounded-3xl overflow-hidden border border-white/10">
 
-                    <div className="rounded-3xl overflow-hidden bg-[#0a0f1c]">
-
-                      <img
-                        src="/profile.png"
-                        alt="profile"
-                        className="w-[300px] h-[400px] object-cover transition duration-500 group-hover:scale-105 group-hover:rotate-[1deg]"
-                      />
-
-                    </div>
+                    <img
+                      src="/profile.png"
+                      className="w-[300px] h-[400px] object-cover transition group-hover:scale-105"
+                    />
 
                   </div>
 
@@ -112,45 +102,21 @@ export default function Home() {
             </motion.div>
           )}
 
-          {/* 💼 PROJECTS */}
           {active === "projects" && (
-            <motion.div
-              key="projects"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="text-center"
-            >
-              <h2 className="text-4xl mb-6">Projects</h2>
-              <p className="text-gray-400">Your projects here...</p>
+            <motion.div key="p" className="text-center">
+              <h1 className="text-4xl">Projects</h1>
             </motion.div>
           )}
 
-          {/* 🎓 CERTS */}
           {active === "certs" && (
-            <motion.div
-              key="certs"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="text-center"
-            >
-              <h2 className="text-4xl mb-6">Certificates</h2>
-              <p className="text-gray-400">Your certificates here...</p>
+            <motion.div key="c" className="text-center">
+              <h1 className="text-4xl">Certificates</h1>
             </motion.div>
           )}
 
-          {/* 📩 CONTACT */}
           {active === "contact" && (
-            <motion.div
-              key="contact"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="text-center"
-            >
-              <h2 className="text-4xl mb-6">Contact</h2>
-              <p className="text-gray-400">Contact form here...</p>
+            <motion.div key="x" className="text-center">
+              <h1 className="text-4xl">Contact</h1>
             </motion.div>
           )}
 
