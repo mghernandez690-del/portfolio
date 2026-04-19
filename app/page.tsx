@@ -1,84 +1,92 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 export default function Home() {
+  const roles = ["Frontend Developer"];
   const [text, setText] = useState("");
-
-  const fullText = "Frontend Developer";
 
   useEffect(() => {
     let i = 0;
-    const interval = setInterval(() => {
-      setText(fullText.slice(0, i));
-      i++;
-      if (i > fullText.length) clearInterval(interval);
-    }, 80);
+    const word = roles[0];
 
-    return () => clearInterval(interval);
+    const typing = setInterval(() => {
+      setText(word.slice(0, i));
+      i++;
+      if (i > word.length) clearInterval(typing);
+    }, 90);
+
+    return () => clearInterval(typing);
   }, []);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#020617] via-[#0a192f] to-[#0f172a] text-white flex flex-col">
-
-      {/* NAVBAR */}
-      <div className="flex justify-center mt-6">
-        <div className="bg-white/5 backdrop-blur-md px-6 py-2 rounded-full flex gap-6 text-sm border border-white/10">
-          <button className="hover:text-blue-400">About</button>
-          <button className="hover:text-blue-400">Projects</button>
-          <button className="hover:text-blue-400">Certificates</button>
-          <button className="hover:text-blue-400">Contact</button>
+    <main className="min-h-screen bg-gradient-to-br from-[#020617] via-[#07152d] to-[#0b1120] text-white overflow-hidden">
+      {/* NAV */}
+      <nav className="w-full flex justify-center pt-6">
+        <div className="px-3 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl flex gap-2 md:gap-3">
+          {["About", "Projects", "Certificates", "Contact"].map((item, i) => (
+            <button
+              key={i}
+              className="px-4 py-2 rounded-full text-sm text-white/80 hover:text-white hover:bg-white/10 transition-all duration-300"
+            >
+              {item}
+            </button>
+          ))}
         </div>
-      </div>
+      </nav>
 
       {/* HERO */}
-      <section className="flex flex-1 items-center justify-center px-6 md:px-20">
+      <section className="max-w-7xl mx-auto min-h-[90vh] px-6 md:px-12 grid md:grid-cols-2 gap-12 items-center">
+        {/* LEFT */}
+        <div className="space-y-6">
+          <p className="text-white/60 text-lg">Hello, I'm</p>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center w-full max-w-6xl">
+          <h1 className="text-5xl md:text-7xl font-black leading-none tracking-tight">
+            <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-yellow-300 bg-clip-text text-transparent">
+              MG HERNANDEZ
+            </span>
+          </h1>
 
-          {/* TEXT */}
-          <div>
-            <p className="text-gray-400 mb-2">Hello, I'm</p>
+          <h2 className="text-2xl md:text-3xl font-semibold text-yellow-300 min-h-[40px]">
+            {text}
+          </h2>
 
-            <h1 className="text-5xl md:text-6xl font-bold mb-4">
-              <span className="text-blue-400">MG</span> HERNANDEZ
-            </h1>
+          <p className="text-white/65 text-lg leading-relaxed max-w-xl">
+            Even if my vision isn’t always clear, my goals are. I push myself to
+            learn, improve, and build modern, impactful web applications while
+            continuously growing my skills.
+          </p>
 
-            <h2 className="text-blue-300 mb-4 h-6">{text}</h2>
+          <div className="flex flex-wrap gap-4 pt-2">
+            <button className="px-6 py-3 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition">
+              View Work
+            </button>
 
-            <p className="text-gray-400 mb-6 leading-relaxed max-w-md">
-              Even if my vision isn’t always clear, my goals are. I push myself 
-              to learn, improve, and build modern, impactful web applications.
-            </p>
-
-            <div className="flex gap-4">
-              <button className="px-6 py-2 border border-blue-400 rounded hover:bg-blue-500 transition">
-                View Work
-              </button>
-
-              <button className="px-6 py-2 bg-blue-500 rounded hover:opacity-80 transition">
-                Contact Me
-              </button>
-            </div>
+            <button className="px-6 py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-semibold hover:scale-105 transition">
+              Contact Me
+            </button>
           </div>
+        </div>
 
-          {/* IMAGE */}
-          <div className="flex justify-center">
-            <div className="bg-[#112240] p-4 rounded-xl shadow-lg">
+        {/* RIGHT */}
+        <div className="flex justify-center md:justify-end">
+          <div className="relative group">
+            <div className="absolute -inset-3 bg-gradient-to-r from-blue-500/30 to-yellow-400/30 blur-2xl rounded-3xl"></div>
+
+            <div className="relative p-3 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl group-hover:-translate-y-2 group-hover:rotate-1 transition duration-500">
               <Image
                 src="/profile.png"
-                alt="profile"
-                width={260}
-                height={320}
-                className="rounded-lg"
+                alt="Profile"
+                width={360}
+                height={460}
+                className="rounded-2xl object-cover"
+                priority
               />
             </div>
           </div>
-
         </div>
       </section>
-
     </main>
   );
 }
