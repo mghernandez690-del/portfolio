@@ -4,182 +4,179 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 export default function Home() {
+  const roles = ["React Developer", "UI Engineer", "Frontend Developer"];
   const [text, setText] = useState("");
-  const roles = ["Frontend Developer", "React Developer", "UI Developer"];
+  const [index, setIndex] = useState(0);
 
-  // ✅ FIXED typing loop
+  // typing effect
   useEffect(() => {
-    let roleIndex = 0;
+    let i = 0;
+    const interval = setInterval(() => {
+      setText(roles[index].slice(0, i));
+      i++;
+      if (i > roles[index].length) {
+        clearInterval(interval);
+        setTimeout(() => {
+          setIndex((prev) => (prev + 1) % roles.length);
+        }, 1500);
+      }
+    }, 60);
 
-    const loop = setInterval(() => {
-      let current = roles[roleIndex];
-      let i = 0;
-
-      const typing = setInterval(() => {
-        setText(current.slice(0, i));
-        i++;
-        if (i > current.length) clearInterval(typing);
-      }, 50);
-
-      roleIndex = (roleIndex + 1) % roles.length;
-    }, 2500);
-
-    return () => clearInterval(loop);
-  }, []);
+    return () => clearInterval(interval);
+  }, [index]);
 
   return (
-    <main className="min-h-screen bg-[#020617] text-white scroll-smooth">
+    <main className="min-h-screen bg-[#020617] text-white relative overflow-hidden">
 
-      {/* 🌌 BACKGROUND */}
-      <div className="fixed inset-0 -z-10">
-        <div className="absolute w-[500px] h-[500px] bg-blue-900 blur-[140px] opacity-40 top-[-100px] left-[-100px]" />
-        <div className="absolute w-[400px] h-[400px] bg-yellow-600 blur-[120px] opacity-20 bottom-[-100px] right-[-100px]" />
+      {/* 🔥 BACKGROUND GLOW */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute w-[600px] h-[600px] bg-blue-800/30 blur-[150px] top-[-150px] left-[-150px]" />
+        <div className="absolute w-[500px] h-[500px] bg-yellow-500/20 blur-[120px] bottom-[-100px] right-[-100px]" />
       </div>
 
-      {/* 🔝 NAVBAR */}
-      <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
-        <div className="backdrop-blur-lg bg-white/5 border border-white/10 px-6 py-2 rounded-full flex gap-6 text-sm">
+      {/* ✨ PARTICLES */}
+      <div className="absolute inset-0 -z-10">
+        {[...Array(40)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-white/20 rounded-full animate-pulse"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+            }}
+          />
+        ))}
+      </div>
 
-          {[
-            { name: "About", id: "#about" },
-            { name: "Projects", id: "#projects" },
-            { name: "Certificates", id: "#certs" },
-            { name: "Contact", id: "#contact" },
-          ].map((item) => (
-            <a
-              key={item.name}
-              href={item.id}
-              className="relative hover:text-yellow-400 transition after:w-0 after:h-[2px] after:bg-yellow-400 after:absolute after:left-0 after:-bottom-1 hover:after:w-full after:transition-all"
-            >
-              {item.name}
-            </a>
-          ))}
-
+      {/* 🔹 NAVBAR */}
+      <nav className="flex justify-center pt-6">
+        <div className="backdrop-blur-md bg-white/5 border border-white/10 px-6 py-2 rounded-full space-x-6">
+          <a href="#about">About</a>
+          <a href="#projects">Projects</a>
+          <a href="#certs">Certificates</a>
+          <a href="#contact">Contact</a>
         </div>
       </nav>
 
-      {/* 🧠 HERO */}
-      <section className="flex items-center min-h-screen px-6">
-        <div className="max-w-6xl mx-auto w-full flex flex-col md:flex-row items-center gap-10">
+      {/* 🔥 HERO */}
+      <section className="max-w-6xl mx-auto px-6 py-20 flex flex-col md:flex-row items-center justify-between gap-10">
 
-          {/* TEXT */}
-          <div className="flex-1">
+        {/* TEXT */}
+        <div className="max-w-xl">
+          <p className="text-gray-400 mb-2">Hello, I'm</p>
 
-            <p className="text-sm text-gray-400 mb-2">Hello, I'm</p>
-
-            <h1 className="text-5xl md:text-6xl font-bold mb-4">
+          <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-4">
+            <span className="bg-gradient-to-r from-blue-400 to-yellow-400 text-transparent bg-clip-text">
               MG HERNANDEZ
-            </h1>
+            </span>
+          </h1>
 
-            <h2 className="text-lg text-yellow-400 mb-4 h-6">
-              {text}
-            </h2>
+          <h2 className="text-yellow-400 text-xl mb-4 h-6">
+            {text}
+          </h2>
 
-            <p className="text-gray-400 max-w-md text-sm mb-6 leading-relaxed">
-              I am a frontend developer focused on building clean, responsive,
-              and user-friendly web applications. I continuously learn new
-              technologies and aim to create meaningful digital experiences.
-            </p>
+          <p className="text-gray-400 mb-6">
+            Even if my vision isn’t always clear, my goals are. I push myself to learn,
+            improve, and build impactful web applications.
+          </p>
 
+          <div className="space-x-4">
             <a
               href="#projects"
-              className="px-6 py-2 bg-yellow-500 text-black rounded-lg hover:scale-105 transition shadow-lg inline-block"
+              className="px-6 py-2 border border-white/20 rounded-lg hover:bg-white/10 transition"
             >
               View Work
             </a>
-          </div>
 
-          {/* IMAGE */}
-          <div className="flex-1 flex justify-center">
-            <motion.img
-              src="/profile.png"
-              alt="profile"
-              whileHover={{ scale: 1.05 }}
-              className="w-[260px] md:w-[320px] rounded-xl shadow-[0_0_60px_rgba(255,215,0,0.15)] object-cover"
-            />
+            <a
+              href="#contact"
+              className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-black rounded-lg hover:scale-105 transition shadow-lg"
+            >
+              Contact Me
+            </a>
           </div>
-
         </div>
-      </section>
 
-      {/* 👤 ABOUT */}
-      <section id="about" className="py-20 px-6 max-w-5xl mx-auto text-center">
-        <h2 className="text-3xl font-bold mb-6">About Me</h2>
-
-        <p className="text-gray-400 leading-relaxed">
-          I am an aspiring frontend developer passionate about creating modern,
-          responsive, and user-friendly interfaces. I focus on clean design,
-          performance, and continuous improvement in every project I build.
-        </p>
+        {/* IMAGE */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+        >
+          <img
+            src="/profile.png"
+            alt="profile"
+            className="w-[320px] h-[400px] object-cover rounded-2xl shadow-2xl border border-white/10"
+          />
+        </motion.div>
       </section>
 
       {/* 💼 PROJECTS */}
-      <section id="projects" className="py-20 px-6 max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold mb-10 text-center">Projects</h2>
+      <section id="projects" className="max-w-6xl mx-auto px-6 py-20">
+        <h2 className="text-3xl font-bold mb-10">Projects</h2>
 
-        <div className="grid md:grid-cols-3 gap-6">
-
+        <div className="grid md:grid-cols-2 gap-8">
           {[
-            "Portfolio Website",
-            "Authentication System",
-            "E-commerce UI",
-          ].map((proj) => (
+            {
+              title: "Portfolio Website",
+              desc: "Modern personal portfolio built with Next.js",
+              img: "/profile.png",
+              link: "#",
+            },
+            {
+              title: "Gown Rental System",
+              desc: "Full-stack system with authentication & dashboard",
+              img: "/profile.png",
+              link: "#",
+            },
+          ].map((p, i) => (
             <motion.div
-              key={proj}
-              whileHover={{ scale: 1.05 }}
-              className="bg-white/5 border border-white/10 rounded-xl p-6 hover:shadow-[0_0_30px_rgba(255,215,0,0.2)] transition"
+              key={i}
+              whileHover={{ scale: 1.03 }}
+              className="bg-white/5 border border-white/10 rounded-xl overflow-hidden backdrop-blur"
             >
-              <h3 className="text-lg font-semibold mb-2">{proj}</h3>
-              <p className="text-sm text-gray-400">
-                Built using React, Tailwind, and modern UI practices.
-              </p>
+              <img src={p.img} className="w-full h-48 object-cover" />
+              <div className="p-4">
+                <h3 className="text-xl font-semibold">{p.title}</h3>
+                <p className="text-gray-400 text-sm">{p.desc}</p>
+
+                <a
+                  href={p.link}
+                  className="inline-block mt-3 text-yellow-400"
+                >
+                  Live Demo →
+                </a>
+              </div>
             </motion.div>
           ))}
-
         </div>
       </section>
 
-      {/* 🎓 CERTIFICATES */}
-      <section id="certs" className="py-20 px-6 max-w-5xl mx-auto text-center">
-        <h2 className="text-3xl font-bold mb-10">Certificates</h2>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {["HTML Certificate", "CSS Certificate", "React Certificate"].map(
-            (cert) => (
-              <div
-                key={cert}
-                className="bg-white/5 border border-white/10 p-6 rounded-xl"
-              >
-                {cert}
-              </div>
-            )
-          )}
-        </div>
+      {/* 📜 CERTIFICATES */}
+      <section id="certs" className="max-w-6xl mx-auto px-6 py-20">
+        <h2 className="text-3xl font-bold mb-6">Certificates</h2>
+        <p className="text-gray-400">Add your certificates here...</p>
       </section>
 
       {/* 📩 CONTACT */}
-      <section id="contact" className="py-20 px-6 max-w-xl mx-auto text-center">
-        <h2 className="text-3xl font-bold mb-6">Contact Me</h2>
+      <section id="contact" className="max-w-3xl mx-auto px-6 py-20">
+        <h2 className="text-3xl font-bold mb-6">Contact</h2>
 
-        <form className="flex flex-col gap-4">
+        <form className="space-y-4">
           <input
-            type="text"
             placeholder="Your Name"
-            className="p-3 bg-white/5 border border-white/10 rounded"
+            className="w-full p-3 bg-white/5 border border-white/10 rounded"
           />
-
           <input
-            type="email"
-            placeholder="Your Email"
-            className="p-3 bg-white/5 border border-white/10 rounded"
+            placeholder="Email"
+            className="w-full p-3 bg-white/5 border border-white/10 rounded"
           />
-
           <textarea
             placeholder="Message"
-            className="p-3 bg-white/5 border border-white/10 rounded"
+            className="w-full p-3 bg-white/5 border border-white/10 rounded"
           />
 
-          <button className="bg-yellow-500 text-black py-3 rounded hover:scale-105 transition">
+          <button className="px-6 py-2 bg-yellow-400 text-black rounded hover:scale-105 transition">
             Send Message
           </button>
         </form>
