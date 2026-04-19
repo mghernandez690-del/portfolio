@@ -10,7 +10,7 @@ export default function Home() {
   const roles = ["Frontend Developer", "UI Designer", "React Developer"];
   const [index, setIndex] = useState(0);
 
-  // AUTO CHANGE ROLE
+  // CHANGE ROLE
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % roles.length);
@@ -47,11 +47,11 @@ export default function Home() {
           <button onClick={() => setActive("skills")}>Skills</button>
           <button onClick={() => setActive("projects")}>Projects</button>
           <button onClick={() => setActive("certs")}>Certs</button>
-          <button className="border px-4 py-1 rounded">Contact</button>
+          <button className="border px-4 py-1 rounded-lg">Contact</button>
         </div>
       </nav>
 
-      {/* MAIN CONTENT */}
+      {/* CONTENT */}
       <div className="h-[calc(100vh-80px)] flex items-center justify-center px-10">
 
         <AnimatePresence mode="wait">
@@ -67,52 +67,66 @@ export default function Home() {
               className="w-full flex flex-col md:flex-row items-center justify-between"
             >
 
-              {/* TEXT */}
+              {/* LEFT */}
               <div className="max-w-xl">
 
                 <h1 className="text-5xl font-bold mb-4 leading-tight">
                   Hi, I'm{" "}
-                  <span className="text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.7)]">
+                  <span className="text-blue-400 drop-shadow-[0_0_12px_rgba(59,130,246,0.8)]">
                     Mg Hernandez
                   </span>
                 </h1>
 
-                <h2 className="text-xl text-blue-300 h-6 mb-4">
+                <h2 className="text-xl text-blue-300 h-6 mb-4 tracking-wide">
                   {text}
                 </h2>
 
                 <p className="text-gray-400 mb-6 leading-relaxed">
-                  Even if my vision isn’t always clear, my goals are. I’m a passionate frontend developer
-                  who is always willing to learn, improve, and push forward. I focus on building clean,
-                  responsive, and modern web applications while continuously growing my skills.
+                  I am a frontend developer focused on building modern, scalable, and user-friendly web applications.
+                  Despite challenges, I continuously push myself to improve, learn new technologies, and deliver
+                  clean and efficient solutions. My goal is to create meaningful and impactful digital experiences.
                 </p>
 
                 <div className="space-x-4">
                   <button
                     onClick={() => setActive("projects")}
-                    className="px-6 py-2 border border-blue-400 rounded 
-                    hover:bg-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.7)]
-                    transition"
+                    className="px-6 py-2 border border-blue-400 rounded-lg 
+                    hover:bg-blue-500 hover:shadow-[0_0_25px_rgba(59,130,246,0.6)]
+                    transition duration-300"
                   >
                     View Projects
                   </button>
 
-                  <button className="px-6 py-2 bg-blue-500 rounded hover:shadow-lg transition">
+                  <button
+                    className="px-6 py-2 bg-blue-500 rounded-lg 
+                    hover:shadow-[0_0_30px_rgba(59,130,246,0.8)]
+                    transition duration-300"
+                  >
                     Contact Me
                   </button>
                 </div>
               </div>
 
-              {/* IMAGE */}
+              {/* RIGHT IMAGE (PRO STYLE) */}
               <div className="mt-10 md:mt-0">
-                <div className="w-72 h-72 rounded-full overflow-hidden
-                shadow-[0_0_40px_rgba(59,130,246,0.4)] hover:scale-105 transition">
+                <div className="relative w-[300px] h-[380px] rounded-2xl overflow-hidden
+                bg-[#0f172a]
+                border border-white/10
+                shadow-[0_0_60px_rgba(59,130,246,0.25)]
+                hover:shadow-[0_0_80px_rgba(59,130,246,0.5)]
+                transition duration-500 group">
 
                   <img
                     src="/profile.png"
                     alt="profile"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                   />
+
+                  {/* OVERLAY */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+
+                  {/* GLOW BORDER */}
+                  <div className="absolute inset-0 border border-blue-400/20 rounded-2xl animate-pulse" />
 
                 </div>
               </div>
@@ -131,9 +145,8 @@ export default function Home() {
             >
               <h2 className="text-4xl font-bold mb-4">About Me</h2>
               <p className="text-gray-400">
-                I am an aspiring frontend developer who is always willing to learn and grow.
-                I believe that even if things are difficult, consistency and effort will always
-                lead me to my goals.
+                I am continuously improving as a developer, focusing on writing clean code,
+                learning modern frameworks, and building real-world projects that solve problems.
               </p>
             </motion.div>
           )}
