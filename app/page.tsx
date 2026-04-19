@@ -7,15 +7,15 @@ export default function Home() {
   const [active, setActive] = useState("home");
 
   return (
-    <main className="h-screen bg-[#020617] text-white relative overflow-hidden">
+    <main className="h-screen text-white relative overflow-hidden bg-[#020617]">
 
-      {/* BACKGROUND */}
+      {/* 🌌 BACKGROUND */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute w-[600px] h-[600px] bg-blue-700/20 blur-[150px] top-[-100px] left-[-100px]" />
         <div className="absolute w-[500px] h-[500px] bg-yellow-400/20 blur-[120px] bottom-[-100px] right-[-100px]" />
       </div>
 
-      {/* NAVBAR */}
+      {/* 🔝 NAVBAR (DI GINALAW STYLE MO) */}
       <nav className="flex justify-center pt-6">
         <div className="backdrop-blur-md bg-white/5 border border-white/10 px-6 py-2 rounded-full flex gap-8 text-sm">
 
@@ -27,9 +27,8 @@ export default function Home() {
             >
               {item}
 
-              {/* ACTIVE LINE */}
               {active === item && (
-                <span className="absolute left-0 -bottom-1 w-full h-[2px] bg-yellow-400 rounded" />
+                <span className="absolute left-0 -bottom-1 w-full h-[2px] bg-yellow-400 rounded"></span>
               )}
             </button>
           ))}
@@ -37,25 +36,26 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* SCREEN SWITCH */}
+      {/* 🧠 SCREEN SWITCH */}
       <div className="h-[calc(100vh-80px)] flex items-center justify-center px-6">
 
         <AnimatePresence mode="wait">
 
-          {/* 🏠 HOME (WITH PROFILE) */}
+          {/* 🏠 HOME */}
           {active === "home" && (
             <motion.div
               key="home"
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -40 }}
-              className="max-w-6xl w-full flex flex-col md:flex-row items-center justify-between gap-10"
+              className="max-w-6xl w-full flex flex-col md:flex-row items-center justify-between gap-16"
             >
 
+              {/* TEXT */}
               <div className="max-w-xl">
                 <p className="text-gray-400 mb-2">Hello, I'm</p>
 
-                <h1 className="text-6xl font-bold mb-4">
+                <h1 className="text-6xl font-bold mb-4 leading-tight">
                   MG{" "}
                   <span className="bg-gradient-to-r from-blue-400 to-yellow-400 text-transparent bg-clip-text">
                     HERNANDEZ
@@ -78,16 +78,35 @@ export default function Home() {
                 </button>
               </div>
 
-              {/* IMAGE */}
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-yellow-400/20 blur-3xl rounded-3xl"></div>
+              {/* 🔥 PREMIUM PROFILE */}
+              <div className="relative group flex items-center justify-center">
 
-                <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-4 shadow-xl">
-                  <img
-                    src="/profile.png"
-                    className="w-[300px] h-[380px] object-cover rounded-2xl"
-                  />
+                {/* GLOW */}
+                <div className="absolute w-[320px] h-[420px] bg-gradient-to-br from-blue-500/20 via-yellow-400/10 to-blue-700/20 blur-3xl opacity-70 group-hover:opacity-100 transition duration-500"></div>
+
+                {/* FLOAT */}
+                <div className="relative animate-float">
+
+                  {/* BACK GLASS */}
+                  <div className="absolute inset-0 rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/10 scale-105"></div>
+
+                  {/* CARD */}
+                  <div className="relative rounded-3xl p-[2px] bg-gradient-to-br from-white/10 to-white/5">
+
+                    <div className="rounded-3xl overflow-hidden bg-[#0a0f1c]">
+
+                      <img
+                        src="/profile.png"
+                        alt="profile"
+                        className="w-[300px] h-[400px] object-cover transition duration-500 group-hover:scale-105 group-hover:rotate-[1deg]"
+                      />
+
+                    </div>
+
+                  </div>
+
                 </div>
+
               </div>
 
             </motion.div>
