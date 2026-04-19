@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 export default function Home() {
-  const [active, setActive] = useState("home");
   const [text, setText] = useState("");
-
   const roles = ["Frontend Developer", "React Developer", "UI Developer"];
-  let index = 0;
 
+  // 🔥 typing effect
   useEffect(() => {
-    const interval = setInterval(() => {
+    let index = 0;
+
+    const loop = setInterval(() => {
       let current = roles[index];
       let i = 0;
 
@@ -19,170 +19,159 @@ export default function Home() {
         setText(current.slice(0, i));
         i++;
         if (i > current.length) clearInterval(typing);
-      }, 60);
+      }, 50);
 
       index = (index + 1) % roles.length;
     }, 2500);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(loop);
+  }, []);
+
+  // 🔥 cursor glow
+  useEffect(() => {
+    const glow = document.getElementById("cursor-glow");
+
+    const move = (e: any) => {
+      if (glow) {
+        glow.style.left = e.clientX + "px";
+        glow.style.top = e.clientY + "px";
+      }
+    };
+
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
   }, []);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#020617] via-[#0a192f] to-[#0f172a] text-white">
+    <main className="min-h-screen text-white relative overflow-hidden">
 
-      {/* NAVBAR */}
-      <nav className="flex justify-between items-center px-8 py-5 border-b border-white/10">
-        <h1 className="text-xl font-bold">&lt;Mg/&gt;</h1>
+      {/* 🔥 CURSOR GLOW */}
+      <div
+        id="cursor-glow"
+        className="fixed w-[200px] h-[200px] bg-purple-500 opacity-20 blur-[100px] pointer-events-none z-0"
+      />
 
-        <div className="space-x-6 hidden md:flex items-center">
-          {["home", "about", "skills", "projects", "certs"].map((item) => (
-            <button
-              key={item}
-              onClick={() => setActive(item)}
-              className={`capitalize ${
-                active === item ? "text-blue-400" : "text-white/70"
-              } hover:text-blue-400 transition`}
-            >
-              {item}
-            </button>
-          ))}
+      {/* 🎯 BACKGROUND */}
+      <div className="absolute inset-0 bg-black">
+        <div className="absolute w-[600px] h-[600px] bg-purple-700 blur-[150px] opacity-40 top-[-100px] left-[-100px]" />
+        <div className="absolute w-[500px] h-[500px] bg-pink-600 blur-[150px] opacity-30 bottom-[-100px] right-[-100px]" />
+      </div>
 
-          <button className="border px-4 py-1 rounded hover:bg-blue-500 transition">
-            Contact
-          </button>
+      {/* 🎯 PARTICLES */}
+      <div className="absolute inset-0 z-0 opacity-20">
+        {[...Array(40)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+            style={{
+              top: Math.random() * 100 + "%",
+              left: Math.random() * 100 + "%",
+            }}
+          />
+        ))}
+      </div>
+
+      {/* NAV */}
+      <nav className="absolute top-6 left-1/2 -translate-x-1/2 z-10">
+        <div className="backdrop-blur-lg bg-white/10 border border-white/20 px-6 py-2 rounded-full flex gap-6 text-sm">
+          <a href="#home">Home</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
         </div>
       </nav>
 
-      {/* CENTER CONTAINER (FIXED WIDTH) */}
-      <div className="max-w-6xl mx-auto px-6">
+      {/* HERO */}
+      <section
+        id="home"
+        className="relative z-10 flex items-center justify-center min-h-screen px-6"
+      >
+        <div className="flex flex-col md:flex-row items-center gap-16 max-w-6xl w-full">
 
-        <AnimatePresence mode="wait">
+          {/* TEXT */}
+          <div className="flex-1">
+            <p className="text-sm text-gray-400 mb-2">Hello, I'm</p>
 
-          {/* HOME */}
-          {active === "home" && (
-            <motion.section
-              key="home"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -40 }}
-              transition={{ duration: 0.4 }}
-              className="flex flex-col md:flex-row items-center justify-between min-h-[80vh] gap-12"
+            <h1 className="text-5xl md:text-6xl font-bold mb-4">
+              MG HERNANDEZ
+            </h1>
+
+            <h2 className="text-lg text-purple-400 mb-4 h-6">{text}</h2>
+
+            <p className="text-gray-400 text-sm max-w-md mb-6">
+              Even if my vision isn’t always clear, my goals are. I push myself
+              to learn, improve, and build impactful web applications.
+            </p>
+
+            <button className="px-6 py-2 bg-purple-600 rounded-lg hover:scale-105 transition shadow-[0_0_20px_rgba(168,85,247,0.7)]">
+              View Work
+            </button>
+          </div>
+
+          {/* IMAGE */}
+          <motion.img
+            src="/profile.png"
+            alt="profile"
+            className="w-[260px] md:w-[320px] rounded-xl shadow-[0_0_40px_rgba(168,85,247,0.4)]"
+            whileHover={{ scale: 1.05 }}
+          />
+        </div>
+      </section>
+
+      {/* 💼 PROJECTS */}
+      <section
+        id="projects"
+        className="relative z-10 py-20 px-6 max-w-6xl mx-auto"
+      >
+        <h2 className="text-3xl font-bold mb-10 text-center">Projects</h2>
+
+        <div className="grid md:grid-cols-3 gap-6">
+
+          {["Portfolio", "Auth System", "E-commerce"].map((proj) => (
+            <motion.div
+              key={proj}
+              whileHover={{ scale: 1.05 }}
+              className="bg-white/5 backdrop-blur-lg border border-white/10 p-6 rounded-xl hover:shadow-[0_0_30px_rgba(168,85,247,0.3)] transition"
             >
+              <h3 className="text-xl mb-2">{proj}</h3>
+              <p className="text-sm text-gray-400">
+                Modern web application built using React & Tailwind.
+              </p>
+            </motion.div>
+          ))}
 
-              {/* TEXT */}
-              <div className="flex-1">
-                <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
-                  Hi, I'm{" "}
-                  <span className="text-blue-400 drop-shadow-[0_0_15px_rgba(59,130,246,0.7)]">
-                    Mg Hernandez
-                  </span>
-                </h1>
+        </div>
+      </section>
 
-                <h2 className="text-xl text-blue-300 h-6 mb-4">
-                  {text}
-                </h2>
+      {/* 📩 CONTACT */}
+      <section
+        id="contact"
+        className="relative z-10 py-20 px-6 max-w-xl mx-auto"
+      >
+        <h2 className="text-3xl font-bold mb-6 text-center">Contact Me</h2>
 
-                <p className="text-gray-400 mb-6 max-w-md leading-relaxed">
-                  Even if my vision isn’t always clear, my goals are. I’m a
-                  passionate frontend developer who is always willing to learn,
-                  improve, and push forward. I focus on building clean,
-                  responsive, and modern web applications.
-                </p>
+        <form className="flex flex-col gap-4">
+          <input
+            type="text"
+            placeholder="Your Name"
+            className="p-3 bg-white/5 border border-white/10 rounded"
+          />
 
-                <div className="flex gap-4">
-                  <button
-                    onClick={() => setActive("projects")}
-                    className="px-6 py-2 border border-blue-400 rounded hover:bg-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] transition"
-                  >
-                    View Projects
-                  </button>
+          <input
+            type="email"
+            placeholder="Your Email"
+            className="p-3 bg-white/5 border border-white/10 rounded"
+          />
 
-                  <button className="px-6 py-2 bg-blue-500 rounded hover:shadow-[0_0_20px_rgba(59,130,246,0.7)] transition">
-                    Contact Me
-                  </button>
-                </div>
-              </div>
+          <textarea
+            placeholder="Message"
+            className="p-3 bg-white/5 border border-white/10 rounded"
+          />
 
-              {/* IMAGE (FIXED SIZE + CENTERED) */}
-              <div className="flex-1 flex justify-center">
-                <motion.img
-                  src="/profile.png"
-                  alt="profile"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5 }}
-                  className="w-[260px] md:w-[320px] rounded-xl shadow-[0_0_40px_rgba(59,130,246,0.4)] object-cover"
-                />
-              </div>
-
-            </motion.section>
-          )}
-
-          {/* ABOUT */}
-          {active === "about" && (
-            <motion.section
-              key="about"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="min-h-[80vh] flex items-center justify-center text-center"
-            >
-              <div className="max-w-2xl">
-                <h2 className="text-4xl font-bold mb-6">About Me</h2>
-                <p className="text-gray-400 leading-relaxed">
-                  I'm an aspiring frontend developer passionate about building
-                  modern, responsive, and user-friendly applications. I
-                  continuously learn and improve my skills to create impactful
-                  digital experiences.
-                </p>
-              </div>
-            </motion.section>
-          )}
-
-          {/* SKILLS */}
-          {active === "skills" && (
-            <motion.section
-              key="skills"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="min-h-[80vh] flex items-center justify-center"
-            >
-              <div className="grid md:grid-cols-2 gap-6 w-full max-w-3xl">
-                {[
-                  "React",
-                  "Next.js",
-                  "Tailwind",
-                  "JavaScript",
-                  "Git",
-                  "Supabase",
-                ].map((skill) => (
-                  <div
-                    key={skill}
-                    className="bg-[#112240] p-6 rounded-xl text-center hover:scale-105 transition"
-                  >
-                    {skill}
-                  </div>
-                ))}
-              </div>
-            </motion.section>
-          )}
-
-          {/* PROJECTS */}
-          {active === "projects" && (
-            <motion.section
-              key="projects"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="min-h-[80vh] flex items-center justify-center"
-            >
-              <p className="text-gray-400">Projects coming soon...</p>
-            </motion.section>
-          )}
-
-        </AnimatePresence>
-      </div>
+          <button className="bg-purple-600 py-3 rounded hover:scale-105 transition">
+            Send Message
+          </button>
+        </form>
+      </section>
     </main>
   );
 }
