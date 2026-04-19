@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
   const [active, setActive] = useState("");
@@ -9,6 +9,7 @@ export default function Home() {
 
   const fullText = "Frontend Developer";
 
+  // typing effect
   useEffect(() => {
     let i = 0;
     const interval = setInterval(() => {
@@ -21,18 +22,28 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#020617] via-[#0a192f] to-[#0f172a] text-white">
+    <main className="h-screen overflow-hidden bg-gradient-to-br from-[#020617] via-[#0a192f] to-[#0f172a] text-white">
 
       {/* NAVBAR */}
-      <nav className="flex justify-between items-center px-10 py-6">
+      <nav className="flex justify-between items-center px-10 py-6 border-b border-white/10">
         <h1 className="text-xl font-bold">&lt;Mg/&gt;</h1>
 
-        <div className="space-x-6 hidden md:block">
-          <button onClick={() => setActive("about")}>About</button>
-          <button onClick={() => setActive("skills")}>Skills</button>
-          <button onClick={() => setActive("projects")}>Projects</button>
-          <button onClick={() => setActive("certs")}>Certificates</button>
-          <button className="border px-4 py-1 rounded">Contact</button>
+        <div className="space-x-6 hidden md:flex items-center">
+          {["about", "skills", "projects", "certs"].map((item) => (
+            <button
+              key={item}
+              onClick={() => setActive(item)}
+              className={`capitalize transition ${
+                active === item ? "text-blue-400" : "hover:text-blue-300"
+              }`}
+            >
+              {item}
+            </button>
+          ))}
+
+          <button className="border px-4 py-1 rounded hover:bg-white/10 transition">
+            Contact
+          </button>
         </div>
       </nav>
 
@@ -69,51 +80,77 @@ export default function Home() {
 
         {/* IMAGE */}
         <div className="mt-10 md:mt-0">
-          <div className="w-72 h-72 bg-[#112240] rounded-xl flex items-center justify-center">
+          <div className="w-72 h-72 bg-[#112240] rounded-xl flex items-center justify-center shadow-lg">
             Your Image
           </div>
         </div>
       </section>
 
-      {/* DYNAMIC CONTENT ONLY */}
-      <div className="px-10 pb-20">
+      {/* TABS CONTENT (CENTERED DASHBOARD STYLE) */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
 
-        {active === "about" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <h2 className="text-3xl font-bold mb-4">About Me</h2>
-            <p className="text-gray-400 max-w-xl">
-              I'm an aspiring frontend developer passionate about building modern websites.
-            </p>
-          </motion.div>
-        )}
+        <div className="w-full max-w-3xl px-6 pointer-events-auto">
 
-        {active === "skills" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <h2 className="text-3xl font-bold mb-6">Skills</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {["HTML", "CSS", "JavaScript", "React", "Tailwind", "Git"].map((skill) => (
-                <div key={skill} className="bg-[#112240] p-4 rounded text-center">
-                  {skill}
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        )}
+          <AnimatePresence mode="wait">
+            {active && (
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -40 }}
+                transition={{ duration: 0.4 }}
+                className="bg-[#112240] p-8 rounded-xl shadow-xl backdrop-blur-md border border-white/10"
+              >
 
-        {active === "projects" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <h2 className="text-3xl font-bold mb-6">Projects</h2>
-            <p className="text-gray-400">Your projects here...</p>
-          </motion.div>
-        )}
+                {active === "about" && (
+                  <>
+                    <h2 className="text-3xl font-bold mb-4">About Me</h2>
+                    <p className="text-gray-300">
+                      I'm an aspiring frontend developer passionate about building
+                      clean, modern, and responsive websites using React and Tailwind.
+                    </p>
+                  </>
+                )}
 
-        {active === "certs" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <h2 className="text-3xl font-bold mb-6">Certificates</h2>
-            <p className="text-gray-400">Your certificates here...</p>
-          </motion.div>
-        )}
+                {active === "skills" && (
+                  <>
+                    <h2 className="text-3xl font-bold mb-6">Skills</h2>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {["HTML", "CSS", "JavaScript", "React", "Tailwind", "Git"].map((skill) => (
+                        <div
+                          key={skill}
+                          className="bg-[#0f172a] p-4 rounded text-center hover:bg-blue-500/20 transition"
+                        >
+                          {skill}
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
 
+                {active === "projects" && (
+                  <>
+                    <h2 className="text-3xl font-bold mb-4">Projects</h2>
+                    <p className="text-gray-300">
+                      Your portfolio projects will be displayed here.
+                    </p>
+                  </>
+                )}
+
+                {active === "certs" && (
+                  <>
+                    <h2 className="text-3xl font-bold mb-4">Certificates</h2>
+                    <p className="text-gray-300">
+                      Your certifications and achievements here.
+                    </p>
+                  </>
+                )}
+
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+        </div>
       </div>
 
     </main>
