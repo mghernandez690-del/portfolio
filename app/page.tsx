@@ -9,10 +9,10 @@ export default function Home() {
       {/* NAV */}
       <nav className="flex justify-center pt-6">
         <div className="flex gap-6 px-6 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-sm">
-          <a href="#about" className="hover:text-yellow-400">About</a>
-          <a href="#projects" className="hover:text-yellow-400">Projects</a>
-          <a href="#certs" className="hover:text-yellow-400">Certificates</a>
-          <a href="#contact" className="hover:text-yellow-400">Contact</a>
+          <a href="#" className="hover:text-yellow-400">About</a>
+          <a href="#" className="hover:text-yellow-400">Projects</a>
+          <a href="#" className="hover:text-yellow-400">Certificates</a>
+          <a href="#" className="hover:text-yellow-400">Contact</a>
         </div>
       </nav>
 
@@ -23,7 +23,7 @@ export default function Home() {
         <div className="max-w-xl">
           <p className="text-gray-400 mb-2">Hello, I'm</p>
 
-          <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-4">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4">
             <span className="bg-gradient-to-r from-blue-400 to-yellow-400 text-transparent bg-clip-text">
               MG HERNANDEZ
             </span>
@@ -39,19 +39,13 @@ export default function Home() {
           </p>
 
           <div className="flex gap-4">
-            <a
-              href="#projects"
-              className="px-6 py-2 border border-white/20 rounded-lg hover:bg-white/10 transition"
-            >
+            <button className="px-6 py-2 border border-white/20 rounded-lg hover:bg-white/10 transition">
               View Work
-            </a>
+            </button>
 
-            <a
-              href="#contact"
-              className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-black rounded-lg font-semibold hover:scale-105 transition"
-            >
+            <button className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-black rounded-lg font-semibold hover:scale-105 transition">
               Contact Me
-            </a>
+            </button>
           </div>
         </div>
 
