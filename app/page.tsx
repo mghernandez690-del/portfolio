@@ -6,8 +6,11 @@ export default function Home() {
   const [active, setActive] = useState("about");
   const [show, setShow] = useState(true);
   const [text, setText] = useState("");
+  const [animateBars, setAnimateBars] = useState(false);
 
   const fullText = "Frontend Developer";
+
+  const tabs = ["about", "skills", "projects", "certs", "contact"];
 
   // TYPEWRITER
   useEffect(() => {
@@ -29,7 +32,13 @@ export default function Home() {
     return () => clearTimeout(t);
   }, [active]);
 
-  const tabs = ["about", "projects", "certs", "contact"];
+  // SKILL ANIMATION TRIGGER
+  useEffect(() => {
+    if (active === "skills") {
+      setAnimateBars(false);
+      setTimeout(() => setAnimateBars(true), 200);
+    }
+  }, [active]);
 
   return (
     <main
@@ -52,7 +61,6 @@ export default function Home() {
             background: "rgba(255,255,255,0.05)",
             border: "1px solid rgba(255,255,255,0.1)",
             backdropFilter: "blur(10px)",
-            fontSize: "16px",
           }}
         >
           {tabs.map((item) => {
@@ -65,35 +73,22 @@ export default function Home() {
                 style={{
                   cursor: "pointer",
                   position: "relative",
-                  paddingBottom: "4px",
                   color: active === item ? "#facc15" : "#ccc",
-                  transition: "0.3s",
-                }}
-                onMouseEnter={(e) => {
-                  if (active !== item) {
-                    e.currentTarget.style.color = "#fff";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (active !== item) {
-                    e.currentTarget.style.color = "#ccc";
-                  }
                 }}
               >
                 {label}
 
-                {/* UNDERLINE (hover + active) */}
+                {/* underline */}
                 <span
                   style={{
                     position: "absolute",
                     left: 0,
-                    bottom: 0,
+                    bottom: "-4px",
                     height: "2px",
                     width: active === item ? "100%" : "0%",
                     background: "#facc15",
                     transition: "0.3s",
                   }}
-                  className="underline"
                 />
               </span>
             );
@@ -107,13 +102,13 @@ export default function Home() {
           maxWidth: "1100px",
           margin: "0 auto",
           opacity: show ? 1 : 0,
-          transform: show ? "translateY(0px)" : "translateY(20px)",
-          transition: "all 0.4s ease",
+          transform: show ? "translateY(0)" : "translateY(20px)",
+          transition: "0.4s",
         }}
       >
         {/* ABOUT */}
         {active === "about" && (
-          <div style={{ display: "flex", gap: "50px", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", gap: "50px", justifyContent: "space-between", alignItems: "center" }}>
             <div style={{ maxWidth: "520px" }}>
               <p style={{ color: "#aaa" }}>Hello, I'm</p>
 
@@ -130,35 +125,57 @@ export default function Home() {
               </h1>
 
               <h2 style={{ color: "#facc15", height: "30px" }}>
-                {text}
-                <span style={{ marginLeft: "5px" }}>|</span>
+                {text} |
               </h2>
 
-              <p style={{ color: "#aaa", marginTop: "15px", lineHeight: "1.7" }}>
+              <p style={{ color: "#aaa", marginTop: "15px" }}>
                 Even if my vision isn’t always clear, my goals are. I push myself to learn,
                 improve, and build impactful web applications.
               </p>
 
-              <div style={{ marginTop: "25px", display: "flex", gap: "12px" }}>
-                <button
-                  onClick={() => setActive("projects")}
-                  style={btnOutline}
-                >
+              <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
+                <button onClick={() => setActive("projects")} style={btnOutline}>
                   View Work
                 </button>
-
-                <button
-                  onClick={() => setActive("contact")}
-                  style={btnPrimary}
-                >
+                <button onClick={() => setActive("contact")} style={btnPrimary}>
                   Contact Me
                 </button>
               </div>
             </div>
 
-            {/* IMAGE */}
             <div style={cardStyle}>
               <img src="/profile.png" style={{ width: "320px", borderRadius: "18px" }} />
+            </div>
+          </div>
+        )}
+
+        {/* SKILLS */}
+        {active === "skills" && (
+          <div>
+            <h2 style={{ fontSize: "32px", marginBottom: "25px" }}>Skills</h2>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "20px" }}>
+              {[
+                { name: "HTML", level: 90 },
+                { name: "CSS", level: 90 },
+                { name: "JavaScript", level: 70 },
+                { name: "React", level: 70 },
+                { name: "Next.js", level: 65 },
+                { name: "Tailwind", level: 50 },
+              ].map((skill) => (
+                <div key={skill.name} style={cardStyle}>
+                  <h3>{skill.name}</h3>
+
+                  <div style={barContainer}>
+                    <div
+                      style={{
+                        ...barFill,
+                        width: animateBars ? `${skill.level}%` : "0%",
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -167,14 +184,11 @@ export default function Home() {
         {active === "projects" && (
           <div>
             <h2 style={{ fontSize: "32px", marginBottom: "20px" }}>Projects</h2>
-
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "20px" }}>
-              {["Portfolio Website", "Gowns & Golds", "UI Landing"].map((p) => (
+              {["Portfolio", "Gowns System", "UI Landing"].map((p) => (
                 <div key={p} style={cardStyle}>
                   <h3>{p}</h3>
-                  <p style={{ color: "#aaa", fontSize: "14px" }}>
-                    Clean modern project built with Next.js.
-                  </p>
+                  <p style={{ color: "#aaa" }}>Modern responsive project</p>
                 </div>
               ))}
             </div>
@@ -185,10 +199,9 @@ export default function Home() {
         {active === "certs" && (
           <div>
             <h2 style={{ fontSize: "32px", marginBottom: "20px" }}>Certificates</h2>
-
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              <div style={cardStyle}>Web Development Certificate</div>
-              <div style={cardStyle}>Frontend Certification</div>
+              <div style={cardStyle}>Web Dev Certificate</div>
+              <div style={cardStyle}>Frontend Certificate</div>
             </div>
           </div>
         )}
@@ -217,9 +230,23 @@ const cardStyle = {
   borderRadius: "12px",
 };
 
+const barContainer = {
+  marginTop: "10px",
+  height: "6px",
+  background: "rgba(255,255,255,0.1)",
+  borderRadius: "10px",
+  overflow: "hidden",
+};
+
+const barFill = {
+  height: "100%",
+  background: "linear-gradient(to right, #60a5fa, #facc15)",
+  transition: "1s ease",
+};
+
 const inputStyle = {
   width: "100%",
-  padding: "12px",
+  padding: "10px",
   marginBottom: "10px",
   borderRadius: "8px",
   border: "1px solid rgba(255,255,255,0.2)",
@@ -228,18 +255,16 @@ const inputStyle = {
 };
 
 const btnPrimary = {
-  padding: "12px 24px",
-  background: "linear-gradient(to right, #facc15, #fb923c)",
+  padding: "10px 20px",
+  background: "#facc15",
   color: "black",
-  border: "none",
-  borderRadius: "10px",
-  fontWeight: "bold",
+  borderRadius: "8px",
 };
 
 const btnOutline = {
-  padding: "12px 24px",
+  padding: "10px 20px",
   border: "1px solid rgba(255,255,255,0.2)",
   background: "transparent",
   color: "white",
-  borderRadius: "10px",
+  borderRadius: "8px",
 };
