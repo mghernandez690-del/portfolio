@@ -16,11 +16,12 @@ import { SiNextdotjs, SiTailwindcss } from "react-icons/si";
 export default function Home() {
   const [active, setActive] = useState("about");
   const [text, setText] = useState("");
+  const [animate, setAnimate] = useState(false);
 
   const roles = ["Frontend Developer", "UI Designer", "Web Developer"];
   const tabs = ["about", "skills", "projects", "certs", "contact"];
 
-  // ✅ FIXED TYPEWRITER LOOP
+  // 🔥 TYPEWRITER (FIXED LOOP)
   useEffect(() => {
     let i = 0;
     let current = 0;
@@ -41,10 +42,18 @@ export default function Home() {
           current = (current + 1) % roles.length;
         }
       }
-    }, 80);
+    }, 70);
 
     return () => clearInterval(interval);
   }, []);
+
+  // 🔥 SKILLS ANIMATION TRIGGER
+  useEffect(() => {
+    if (active === "skills") {
+      setAnimate(false);
+      setTimeout(() => setAnimate(true), 200);
+    }
+  }, [active]);
 
   return (
     <main style={mainStyle}>
@@ -69,9 +78,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ================= CONTENT ================= */}
-
-      {/* ABOUT */}
+      {/* ================= ABOUT ================= */}
       {active === "about" && (
         <div style={heroWrapper}>
           <div>
@@ -109,20 +116,37 @@ export default function Home() {
             {[
               { name: "HTML", icon: <FaHtml5 />, level: 90 },
               { name: "CSS", icon: <FaCss3Alt />, level: 90 },
-              { name: "JavaScript", icon: <FaJs />, level: 75 },
-              { name: "React", icon: <FaReact />, level: 70 },
-              { name: "Next.js", icon: <SiNextdotjs />, level: 65 },
-              { name: "Tailwind", icon: <SiTailwindcss />, level: 60 },
+              { name: "JavaScript", icon: <FaJs />, level: 80 },
+              { name: "React", icon: <FaReact />, level: 75 },
+              { name: "Next.js", icon: <SiNextdotjs />, level: 70 },
+              { name: "Tailwind", icon: <SiTailwindcss />, level: 65 },
             ].map((skill) => (
               <div key={skill.name} style={{ textAlign: "center" }}>
-                <div style={circleIcon}>{skill.icon}</div>
+                {/* ICON WITH GLOW + 3D */}
+                <div
+                  style={circleIcon}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform =
+                      "rotateX(10deg) rotateY(-10deg) scale(1.1)";
+                    e.currentTarget.style.boxShadow =
+                      "0 0 20px rgba(250,204,21,0.9), 0 0 40px rgba(59,130,246,0.4)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "scale(1)";
+                    e.currentTarget.style.boxShadow = "none";
+                  }}
+                >
+                  {skill.icon}
+                </div>
+
                 <p>{skill.name}</p>
 
+                {/* ANIMATED BAR */}
                 <div style={barContainer}>
                   <div
                     style={{
                       ...barFill,
-                      width: `${skill.level}%`,
+                      width: animate ? `${skill.level}%` : "0%",
                     }}
                   />
                 </div>
@@ -141,11 +165,9 @@ export default function Home() {
             <p>
               <FaEnvelope /> mghernandez690@gmail.com
             </p>
-
             <p>
               <FaFacebook /> Mg Hernandez
             </p>
-
             <p>
               <FaInstagram /> progra.mg
             </p>
@@ -253,15 +275,16 @@ const gridStyle: CSSProperties = {
 };
 
 const circleIcon: CSSProperties = {
-  width: 70,
-  height: 70,
+  width: 80,
+  height: 80,
   borderRadius: "50%",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   margin: "0 auto 10px",
   background: "rgba(255,255,255,0.05)",
-  fontSize: 28,
+  fontSize: 30,
+  transition: "all 0.3s ease",
 };
 
 const barContainer: CSSProperties = {
@@ -273,6 +296,7 @@ const barContainer: CSSProperties = {
 const barFill: CSSProperties = {
   height: "100%",
   background: "linear-gradient(to right,#60a5fa,#facc15)",
+  transition: "width 1.2s ease-in-out",
 };
 
 /* CONTACT */
