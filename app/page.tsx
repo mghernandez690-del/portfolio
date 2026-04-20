@@ -32,7 +32,7 @@ export default function Home() {
     return () => clearTimeout(t);
   }, [active]);
 
-  // SKILL ANIMATION TRIGGER
+  // SKILLS ANIMATION
   useEffect(() => {
     if (active === "skills") {
       setAnimateBars(false);
@@ -50,6 +50,27 @@ export default function Home() {
         padding: "40px",
       }}
     >
+      {/* LOGO */}
+      <div
+        style={{
+          position: "absolute",
+          left: "40px",
+          top: "40px",
+          fontWeight: "bold",
+          fontSize: "18px",
+        }}
+      >
+        <span
+          style={{
+            background: "linear-gradient(to right, #60a5fa, #facc15)",
+            WebkitBackgroundClip: "text",
+            color: "transparent",
+          }}
+        >
+          MG.
+        </span>
+      </div>
+
       {/* NAV */}
       <div style={{ display: "flex", justifyContent: "center", marginBottom: "60px" }}>
         <div
@@ -78,7 +99,6 @@ export default function Home() {
               >
                 {label}
 
-                {/* underline */}
                 <span
                   style={{
                     position: "absolute",
@@ -152,7 +172,17 @@ export default function Home() {
         {/* SKILLS */}
         {active === "skills" && (
           <div>
-            <h2 style={{ fontSize: "32px", marginBottom: "25px" }}>Skills</h2>
+            <h2
+              style={{
+                fontSize: "36px",
+                marginBottom: "25px",
+                background: "linear-gradient(to right, #60a5fa, #facc15)",
+                WebkitBackgroundClip: "text",
+                color: "transparent",
+              }}
+            >
+              Skills
+            </h2>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "20px" }}>
               {[
@@ -163,7 +193,25 @@ export default function Home() {
                 { name: "Next.js", level: 65 },
                 { name: "Tailwind", level: 50 },
               ].map((skill) => (
-                <div key={skill.name} style={cardStyle}>
+                <div
+                  key={skill.name}
+                  style={cardStyle}
+                  onMouseMove={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    const rotateX = (y / rect.height - 0.5) * 10;
+                    const rotateY = (x / rect.width - 0.5) * -10;
+
+                    e.currentTarget.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+                    e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,0,0,0.4)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "rotateX(0) rotateY(0)";
+                    e.currentTarget.style.boxShadow = "none";
+                  }}
+                >
                   <h3>{skill.name}</h3>
 
                   <div style={barContainer}>
@@ -228,6 +276,7 @@ const cardStyle = {
   background: "rgba(255,255,255,0.05)",
   border: "1px solid rgba(255,255,255,0.1)",
   borderRadius: "12px",
+  transition: "all 0.3s ease",
 };
 
 const barContainer = {
@@ -241,6 +290,7 @@ const barContainer = {
 const barFill = {
   height: "100%",
   background: "linear-gradient(to right, #60a5fa, #facc15)",
+  boxShadow: "0 0 10px rgba(250, 204, 21, 0.7)",
   transition: "1s ease",
 };
 
