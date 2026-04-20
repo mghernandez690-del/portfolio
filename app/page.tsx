@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import type { CSSProperties } from "react";
+import Image from "next/image";
 import {
   FaHtml5,
   FaCss3Alt,
@@ -14,10 +15,10 @@ import {
 import { SiNextdotjs, SiTailwindcss } from "react-icons/si";
 
 export default function Home() {
-  const [active, setActive] = useState("about me");
+  const [active, setActive] = useState("about");
   const [animate, setAnimate] = useState(false);
 
-  /* TYPEWRITER FIXED */
+  // ✅ FIXED TYPEWRITER
   const roles = ["Frontend Developer", "Web Developer", "UI Designer"];
   const [text, setText] = useState("");
   const [index, setIndex] = useState(0);
@@ -30,7 +31,9 @@ export default function Home() {
         setText(roles[index].substring(0, subIndex + 1));
         setSubIndex((prev) => prev + 1);
 
-        if (subIndex === roles[index].length) setDeleting(true);
+        if (subIndex === roles[index].length) {
+          setDeleting(true);
+        }
       } else {
         setText(roles[index].substring(0, subIndex - 1));
         setSubIndex((prev) => prev - 1);
@@ -52,79 +55,94 @@ export default function Home() {
     }
   }, [active]);
 
-  const tabs = ["about me", "skills", "projects", "certs", "contact"];
-
   return (
     <main style={mainStyle}>
-      <div style={logoStyle}>Magnesium</div>
-
       {/* NAV */}
-      <div style={navWrapper}>
-        <div style={navStyle}>
-          {tabs.map((t) => (
-            <span
-              key={t}
-              onClick={() => setActive(t)}
-              style={{
-                ...navItem,
-                color: active === t ? "#facc15" : "#ccc",
-                borderBottom:
-                  active === t ? "2px solid #facc15" : "none",
-              }}
-            >
-              {t.replace(/\b\w/g, (c) => c.toUpperCase())}
-            </span>
-          ))}
+      <div style={nav}>
+        <h2>Magnesium</h2>
+        <div style={navLinks}>
+          <span onClick={() => setActive("about")}>About Me</span>
+          <span onClick={() => setActive("skills")}>Skills</span>
+          <span onClick={() => setActive("experience")}>Certs</span>
+          <span onClick={() => setActive("contact")}>Contact</span>
         </div>
       </div>
 
-      {/* ABOUT */}
-      {active === "about me" && (
-        <div style={heroSection}>
+      {/* ABOUT / HERO */}
+      {active === "about" && (
+        <section style={hero}>
           <div>
             <p>Hello, I'm</p>
-            <h1 style={heroName}>MG HERNANDEZ</h1>
+            <h1 style={name}>MG HERNANDEZ</h1>
 
-            <h2 style={heroRole}>
-              {text} <span>|</span>
+            <h2 style={role}>
+              {text}
+              <span style={cursor}>|</span>
             </h2>
 
-            <p style={heroDesc}>
+            <p style={desc}>
               Even if my vision isn’t always clear, my goals are.
             </p>
 
-            <div style={{ marginTop: 20, display: "flex", gap: 15 }}>
-              <button style={btnOutline}>View Work</button>
-              <button style={btnPrimary}>Contact Me</button>
+            <div style={btnWrap}>
+              <button onClick={() => setActive("skills")} style={btnOutline}>
+                View Work
+              </button>
+              <button onClick={() => setActive("contact")} style={btnPrimary}>
+                Contact Me
+              </button>
             </div>
           </div>
 
+          {/* IMAGE FIX */}
           <div style={imageCard}>
-            <img src="/profile.png" style={heroImage} />
+            <Image
+              src="/profile.png"
+              alt="profile"
+              width={280}
+              height={380}
+              style={heroImage}
+            />
           </div>
-        </div>
+        </section>
       )}
 
       {/* SKILLS */}
       {active === "skills" && (
-        <div>
-          <div style={gridStyle}>
+        <section style={section}>
+          <h2 style={title}>Skills</h2>
+
+          <div style={grid}>
             {[
               { name: "HTML", icon: <FaHtml5 />, level: 90 },
               { name: "CSS", icon: <FaCss3Alt />, level: 90 },
-              { name: "JavaScript", icon: <FaJs />, level: 85 },
+              { name: "JS", icon: <FaJs />, level: 85 },
               { name: "React", icon: <FaReact />, level: 75 },
-              { name: "Next.js", icon: <SiNextdotjs />, level: 70 },
+              { name: "Next", icon: <SiNextdotjs />, level: 70 },
               { name: "Tailwind", icon: <SiTailwindcss />, level: 65 },
             ].map((skill) => (
-              <div key={skill.name} style={{ textAlign: "center" }}>
-                <div style={circleIcon}>{skill.icon}</div>
+              <div key={skill.name} style={card}>
+                <div
+                  style={circle}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow =
+                      "0 0 25px #facc15";
+                    e.currentTarget.style.transform = "scale(1.1)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = "none";
+                    e.currentTarget.style.transform = "scale(1)";
+                  }}
+                >
+                  {skill.icon}
+                </div>
+
                 <p>{skill.name}</p>
 
-                <div style={barContainer}>
+                <div style={bar}>
                   <div
                     style={{
-                      ...barFill,
+                      ...progress,
                       width: animate ? `${skill.level}%` : "0%",
                     }}
                   />
@@ -132,175 +150,186 @@ export default function Home() {
               </div>
             ))}
           </div>
-
-          {/* EXPERIENCE */}
-          <div style={{ marginTop: 80 }}>
-            <h2 style={{ textAlign: "center" }}>Experience</h2>
-
-            <div style={{ maxWidth: 700, margin: "auto" }}>
-              <div style={expCard}>
-                <h3>THE MATRIX TODAY</h3>
-                <ul>
-                  <li>Media Assistant Director (2024–2025)</li>
-                  <li>Photojournalist (2023–2024)</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
+        </section>
       )}
 
-      {/* CONTACT (FIXED + ADDED) */}
-      {active === "contact" && (
-        <div style={contactWrapper}>
-          <h2>Get in Touch</h2>
+      {/* EXPERIENCE */}
+      {active === "experience" && (
+        <section style={section}>
+          <h2 style={title}>Experience</h2>
 
-          <div style={contactCard}>
-            <p>
-              <FaEnvelope /> mghernandez690@gmail.com
-            </p>
-            <p>
-              <FaInstagram /> progra.mg
-            </p>
-            <p>
-              <FaFacebook /> Mg Hernandez
-            </p>
+          <div style={expWrap}>
+            <div style={expCard}>
+              <h3>THE MATRIX TODAY</h3>
+              <ul>
+                <li>Media Assistant Director (2024–2025)</li>
+                <li>Photojournalist (2023–2024)</li>
+              </ul>
+            </div>
+
+            <div style={expCard}>
+              <h3>ICPEP.se</h3>
+              <ul>
+                <li>Treasurer (2024–2026)</li>
+              </ul>
+            </div>
+
+            <div style={expCard}>
+              <h3>NSTP CWTS</h3>
+              <ul>
+                <li>Head Documentation (2023–2024)</li>
+              </ul>
+            </div>
+
+            <div style={expCard}>
+              <h3>Other</h3>
+              <ul>
+                <li>Student Volunteer (2023–2026)</li>
+                <li>DSWD Cash for Work</li>
+              </ul>
+            </div>
           </div>
-        </div>
+        </section>
+      )}
+
+      {/* CONTACT */}
+      {active === "contact" && (
+        <section style={section}>
+          <h2 style={title}>Contact</h2>
+
+          <div style={contactBox}>
+            <p><FaEnvelope /> mghernandez690@gmail.com</p>
+            <p><FaInstagram /> progra.mg</p>
+            <p><FaFacebook /> Mg Hernandez</p>
+          </div>
+        </section>
       )}
     </main>
   );
 }
 
-/* STYLES */
+/* ================= STYLES ================= */
 
 const mainStyle: CSSProperties = {
-  minHeight: "100vh",
   background: "linear-gradient(135deg,#020617,#07152d,#0b1120)",
+  minHeight: "100vh",
   color: "white",
   padding: 40,
 };
 
-const logoStyle: CSSProperties = {
-  position: "absolute",
-  top: 30,
-  left: 30,
-};
-
-const navWrapper: CSSProperties = {
+const nav: CSSProperties = {
   display: "flex",
-  justifyContent: "center",
+  justifyContent: "space-between",
+  marginBottom: 50,
 };
 
-const navStyle: CSSProperties = {
+const navLinks: CSSProperties = {
   display: "flex",
-  gap: 25,
-  background: "rgba(255,255,255,0.05)",
-  padding: "10px 25px",
-  borderRadius: 50,
-};
-
-const navItem: CSSProperties = {
+  gap: 20,
   cursor: "pointer",
 };
 
-/* HERO */
-const heroSection: CSSProperties = {
+const hero: CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  marginTop: 100,
-  gap: "80px",
 };
 
-const heroName: CSSProperties = {
-  fontSize: 55,
+const name: CSSProperties = {
+  fontSize: 50,
 };
 
-const heroRole: CSSProperties = {
+const role: CSSProperties = {
   color: "#facc15",
 };
 
-const heroDesc: CSSProperties = {
-  color: "#ccc",
+const cursor: CSSProperties = {
+  animation: "blink 1s infinite",
+};
+
+const desc: CSSProperties = {
+  marginTop: 10,
+};
+
+const btnWrap: CSSProperties = {
+  marginTop: 20,
+  display: "flex",
+  gap: 10,
 };
 
 const btnPrimary: CSSProperties = {
   background: "#facc15",
   padding: "10px 20px",
-  borderRadius: 10,
 };
 
 const btnOutline: CSSProperties = {
   border: "1px solid white",
   padding: "10px 20px",
-  borderRadius: 10,
 };
 
 const imageCard: CSSProperties = {
-  borderRadius: "20px",
-  padding: "10px",
-  background: "rgba(255,255,255,0.05)",
-  boxShadow: "0 0 30px rgba(250,204,21,0.3)",
+  boxShadow: "0 0 40px rgba(250,204,21,0.3)",
+  borderRadius: 20,
 };
 
 const heroImage: CSSProperties = {
-  width: "280px",
-  height: "380px",
-  objectFit: "cover",
-  borderRadius: "15px",
+  borderRadius: 20,
 };
 
-/* SKILLS */
-const gridStyle: CSSProperties = {
+const section: CSSProperties = {
+  padding: 40,
+};
+
+const title: CSSProperties = {
+  textAlign: "center",
+  marginBottom: 30,
+};
+
+const grid: CSSProperties = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))",
-  gap: "60px",
+  gridTemplateColumns: "repeat(3,1fr)",
+  gap: 30,
 };
 
-const circleIcon: CSSProperties = {
+const card: CSSProperties = {
+  textAlign: "center",
+};
+
+const circle: CSSProperties = {
   width: 80,
   height: 80,
   borderRadius: "50%",
+  margin: "auto",
   background: "#111",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  transition: "0.3s",
 };
 
-const barContainer: CSSProperties = {
+const bar: CSSProperties = {
   height: 6,
-  background: "#222",
-  borderRadius: 10,
+  background: "#333",
+  marginTop: 10,
 };
 
-const barFill: CSSProperties = {
+const progress: CSSProperties = {
   height: "100%",
-  background: "linear-gradient(90deg,#60a5fa,#facc15)",
-  transition: "1s",
+  background: "linear-gradient(to right,#60a5fa,#facc15)",
 };
 
-/* EXPERIENCE */
+const expWrap: CSSProperties = {
+  maxWidth: 700,
+  margin: "auto",
+};
+
 const expCard: CSSProperties = {
   background: "#111",
   padding: 20,
-  marginTop: 20,
-  borderRadius: 15,
-  borderLeft: "3px solid #facc15",
+  marginBottom: 20,
+  borderRadius: 10,
 };
 
-/* CONTACT */
-const contactWrapper: CSSProperties = {
+const contactBox: CSSProperties = {
   textAlign: "center",
-  marginTop: 100,
-};
-
-const contactCard: CSSProperties = {
-  background: "#111",
-  padding: 30,
-  borderRadius: 15,
-  maxWidth: 400,
-  margin: "auto",
-  marginTop: 20,
-  lineHeight: "2",
 };
