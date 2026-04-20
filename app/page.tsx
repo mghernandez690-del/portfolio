@@ -14,40 +14,11 @@ import {
 import { SiNextdotjs, SiTailwindcss } from "react-icons/si";
 
 export default function Home() {
-  const [active, setActive] = useState("about");
-  const [text, setText] = useState("");
+  const [active, setActive] = useState("skills");
   const [animate, setAnimate] = useState(false);
 
-  const roles = ["Frontend Developer", "UI Designer", "Web Developer"];
   const tabs = ["about", "skills", "projects", "certs", "contact"];
 
-  // 🔥 TYPEWRITER (FIXED LOOP)
-  useEffect(() => {
-    let i = 0;
-    let current = 0;
-    let deleting = false;
-
-    const interval = setInterval(() => {
-      const full = roles[current];
-
-      if (!deleting) {
-        setText(full.slice(0, i + 1));
-        i++;
-        if (i === full.length) deleting = true;
-      } else {
-        setText(full.slice(0, i - 1));
-        i--;
-        if (i === 0) {
-          deleting = false;
-          current = (current + 1) % roles.length;
-        }
-      }
-    }, 70);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // 🔥 SKILLS ANIMATION TRIGGER
   useEffect(() => {
     if (active === "skills") {
       setAnimate(false);
@@ -78,58 +49,26 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ================= ABOUT ================= */}
-      {active === "about" && (
-        <div style={heroWrapper}>
-          <div>
-            <p style={{ color: "#aaa" }}>Hello, I'm</p>
-
-            <h1 style={title}>MG HERNANDEZ</h1>
-
-            <h2 style={role}>
-              {text}
-              <span>|</span>
-            </h2>
-
-            <p style={desc}>
-              I build modern, clean, and impactful web applications.
-            </p>
-
-            <div style={{ marginTop: 20 }}>
-              <button style={btnOutline}>View Work</button>
-              <button style={btnPrimary}>Contact Me</button>
-            </div>
-          </div>
-
-          <div style={imgCard}>
-            <img src="/profile.png" style={{ width: 300, borderRadius: 15 }} />
-          </div>
-        </div>
-      )}
-
       {/* ================= SKILLS ================= */}
       {active === "skills" && (
         <div>
-          <h2 style={skillsTitle}>Skills</h2>
-
           <div style={gridStyle}>
             {[
               { name: "HTML", icon: <FaHtml5 />, level: 90 },
               { name: "CSS", icon: <FaCss3Alt />, level: 90 },
-              { name: "JavaScript", icon: <FaJs />, level: 80 },
+              { name: "JavaScript", icon: <FaJs />, level: 85 },
               { name: "React", icon: <FaReact />, level: 75 },
               { name: "Next.js", icon: <SiNextdotjs />, level: 70 },
               { name: "Tailwind", icon: <SiTailwindcss />, level: 65 },
             ].map((skill) => (
               <div key={skill.name} style={{ textAlign: "center" }}>
-                {/* ICON WITH GLOW + 3D */}
                 <div
                   style={circleIcon}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform =
                       "rotateX(10deg) rotateY(-10deg) scale(1.1)";
                     e.currentTarget.style.boxShadow =
-                      "0 0 20px rgba(250,204,21,0.9), 0 0 40px rgba(59,130,246,0.4)";
+                      "0 0 25px rgba(250,204,21,0.6), 0 0 50px rgba(59,130,246,0.3)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = "scale(1)";
@@ -141,7 +80,6 @@ export default function Home() {
 
                 <p>{skill.name}</p>
 
-                {/* ANIMATED BAR */}
                 <div style={barContainer}>
                   <div
                     style={{
@@ -153,6 +91,47 @@ export default function Home() {
               </div>
             ))}
           </div>
+
+          {/* ================= EXPERIENCE ================= */}
+          <div style={experienceSection}>
+            <h2 style={expTitle}>Experience</h2>
+
+            <div style={timeline}>
+              <div style={line}></div>
+
+              <div
+                style={expCard}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform =
+                    "translateY(-8px) scale(1.02)";
+                  e.currentTarget.style.boxShadow =
+                    "0 0 25px rgba(250,204,21,0.4), 0 0 60px rgba(59,130,246,0.2)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                <span style={year}>2024 - 2027</span>
+
+                <h3 style={company}>
+                  THE MATRIX TODAY, ICPEP.SE
+                </h3>
+
+                <p style={school}>
+                  Marinduque State University
+                </p>
+
+                <p style={roles}>
+                  Videographer • Photographer • Translator • Assistant
+                </p>
+
+                <p style={desc}>
+                  Media Director, ICPEP.se Treasurer (2024–2026)
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
@@ -162,15 +141,9 @@ export default function Home() {
           <div style={contactCard}>
             <h3>Contact Info</h3>
 
-            <p>
-              <FaEnvelope /> mghernandez690@gmail.com
-            </p>
-            <p>
-              <FaFacebook /> Mg Hernandez
-            </p>
-            <p>
-              <FaInstagram /> progra.mg
-            </p>
+            <p><FaEnvelope /> mghernandez690@gmail.com</p>
+            <p><FaFacebook /> Mg Hernandez</p>
+            <p><FaInstagram /> progra.mg</p>
           </div>
 
           <div style={form}>
@@ -220,53 +193,7 @@ const navItem: CSSProperties = {
   cursor: "pointer",
 };
 
-const heroWrapper: CSSProperties = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-};
-
-const title: CSSProperties = {
-  fontSize: 60,
-  background: "linear-gradient(to right,#60a5fa,#facc15)",
-  WebkitBackgroundClip: "text",
-  color: "transparent",
-};
-
-const role: CSSProperties = {
-  color: "#facc15",
-};
-
-const desc: CSSProperties = {
-  color: "#aaa",
-};
-
-const btnPrimary: CSSProperties = {
-  marginLeft: 10,
-  padding: "10px 20px",
-  background: "#facc15",
-  borderRadius: 8,
-};
-
-const btnOutline: CSSProperties = {
-  padding: "10px 20px",
-  border: "1px solid #fff",
-  borderRadius: 8,
-};
-
-const imgCard: CSSProperties = {
-  padding: 20,
-  borderRadius: 20,
-  background: "rgba(255,255,255,0.05)",
-};
-
 /* SKILLS */
-
-const skillsTitle: CSSProperties = {
-  textAlign: "center",
-  fontSize: 36,
-  marginBottom: 40,
-};
 
 const gridStyle: CSSProperties = {
   display: "grid",
@@ -299,6 +226,68 @@ const barFill: CSSProperties = {
   transition: "width 1.2s ease-in-out",
 };
 
+/* EXPERIENCE */
+
+const experienceSection: CSSProperties = {
+  marginTop: 100,
+};
+
+const expTitle: CSSProperties = {
+  fontSize: 36,
+  textAlign: "center",
+  marginBottom: 40,
+  background: "linear-gradient(to right,#60a5fa,#facc15)",
+  WebkitBackgroundClip: "text",
+  color: "transparent",
+};
+
+const timeline: CSSProperties = {
+  position: "relative",
+  paddingLeft: 40,
+  maxWidth: 700,
+  margin: "0 auto",
+};
+
+const line: CSSProperties = {
+  position: "absolute",
+  left: 15,
+  top: 0,
+  bottom: 0,
+  width: 2,
+  background: "linear-gradient(#60a5fa,#facc15)",
+};
+
+const expCard: CSSProperties = {
+  background: "rgba(255,255,255,0.05)",
+  backdropFilter: "blur(10px)",
+  padding: 25,
+  borderRadius: 16,
+  border: "1px solid rgba(255,255,255,0.1)",
+  transition: "all 0.3s ease",
+};
+
+const year: CSSProperties = {
+  color: "#facc15",
+  fontWeight: "bold",
+};
+
+const company: CSSProperties = {
+  marginTop: 10,
+};
+
+const school: CSSProperties = {
+  color: "#aaa",
+};
+
+const roles: CSSProperties = {
+  marginTop: 10,
+};
+
+const desc: CSSProperties = {
+  marginTop: 10,
+  color: "#aaa",
+};
+
 /* CONTACT */
 
 const contactWrapper: CSSProperties = {
@@ -328,4 +317,10 @@ const textarea: CSSProperties = {
   padding: 10,
   borderRadius: 8,
   height: 100,
+};
+
+const btnPrimary: CSSProperties = {
+  padding: "10px 20px",
+  background: "#facc15",
+  borderRadius: 8,
 };
