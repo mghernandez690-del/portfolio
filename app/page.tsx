@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import type { CSSProperties } from "react";
 
 // ICONS
 import {
@@ -108,7 +109,10 @@ export default function Home() {
             </div>
 
             <div style={cardStyle}>
-              <img src="/profile.png" style={{ width: 320, borderRadius: 15 }} />
+              <img
+                src="/profile.png"
+                style={{ width: 320, borderRadius: 15 }}
+              />
             </div>
           </div>
         )}
@@ -168,14 +172,14 @@ export default function Home() {
 
 /* ================== STYLES ================== */
 
-const mainStyle = {
+const mainStyle: CSSProperties = {
   minHeight: "100vh",
   background: "linear-gradient(135deg,#020617,#07152d,#0b1120)",
   color: "white",
   padding: "40px",
 };
 
-const logoStyle = {
+const logoStyle: CSSProperties = {
   position: "absolute",
   left: 40,
   top: 40,
@@ -186,9 +190,13 @@ const logoStyle = {
   color: "transparent",
 };
 
-const navWrapper = { display: "flex", justifyContent: "center", marginBottom: 60 };
+const navWrapper: CSSProperties = {
+  display: "flex",
+  justifyContent: "center",
+  marginBottom: 60,
+};
 
-const navStyle = {
+const navStyle: CSSProperties = {
   display: "flex",
   gap: 30,
   padding: "14px 30px",
@@ -196,12 +204,12 @@ const navStyle = {
   background: "rgba(255,255,255,0.05)",
 };
 
-const navItem = {
+const navItem: CSSProperties = {
   cursor: "pointer",
   position: "relative",
 };
 
-const underline = {
+const underline: CSSProperties = {
   position: "absolute",
   height: 2,
   bottom: -4,
@@ -210,7 +218,7 @@ const underline = {
   transition: "0.3s",
 };
 
-const contentStyle = (show) => ({
+const contentStyle = (show: boolean): CSSProperties => ({
   maxWidth: 1100,
   margin: "0 auto",
   opacity: show ? 1 : 0,
@@ -218,13 +226,13 @@ const contentStyle = (show) => ({
   transition: "0.4s",
 });
 
-const aboutWrapper = {
+const aboutWrapper: CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
 };
 
-const gradientTitle = {
+const gradientTitle: CSSProperties = {
   fontSize: 60,
   fontWeight: "bold",
   background: "linear-gradient(to right,#60a5fa,#facc15)",
@@ -232,9 +240,12 @@ const gradientTitle = {
   color: "transparent",
 };
 
-const desc = { color: "#aaa", marginTop: 10 };
+const desc: CSSProperties = {
+  color: "#aaa",
+  marginTop: 10,
+};
 
-const btnPrimary = {
+const btnPrimary: CSSProperties = {
   marginLeft: 10,
   padding: "10px 20px",
   background: "#facc15",
@@ -242,19 +253,19 @@ const btnPrimary = {
   borderRadius: 8,
 };
 
-const btnOutline = {
+const btnOutline: CSSProperties = {
   padding: "10px 20px",
   border: "1px solid #fff",
   borderRadius: 8,
 };
 
-const cardStyle = {
+const cardStyle: CSSProperties = {
   padding: 20,
   borderRadius: 12,
   background: "rgba(255,255,255,0.05)",
 };
 
-const skillsTitle = {
+const skillsTitle: CSSProperties = {
   textAlign: "center",
   fontSize: 36,
   marginBottom: 40,
@@ -263,13 +274,13 @@ const skillsTitle = {
   color: "transparent",
 };
 
-const gridStyle = {
+const gridStyle: CSSProperties = {
   display: "grid",
   gridTemplateColumns: "repeat(4,1fr)",
   gap: 40,
 };
 
-const circleIcon = {
+const circleIcon: CSSProperties = {
   width: 80,
   height: 80,
   borderRadius: "50%",
@@ -282,14 +293,14 @@ const circleIcon = {
   transition: "0.3s",
 };
 
-const barContainer = {
+const barContainer: CSSProperties = {
   height: 6,
   background: "rgba(255,255,255,0.1)",
   borderRadius: 10,
   overflow: "hidden",
 };
 
-const barFill = {
+const barFill: CSSProperties = {
   height: "100%",
   background: "linear-gradient(to right,#60a5fa,#facc15)",
   transition: "1s",
