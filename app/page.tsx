@@ -14,10 +14,10 @@ import {
 import { SiNextdotjs, SiTailwindcss } from "react-icons/si";
 
 export default function Home() {
-  const [active, setActive] = useState("skills");
+  const [active, setActive] = useState("about me");
   const [animate, setAnimate] = useState(false);
 
-  const tabs = ["about", "skills", "projects", "certs", "contact"];
+  const tabs = ["about me", "skills", "projects", "certs", "contact"];
 
   useEffect(() => {
     if (active === "skills") {
@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <main style={mainStyle}>
       {/* LOGO */}
-      <div style={logoStyle}>MG.</div>
+      <div style={logoStyle}>Magnesium</div>
 
       {/* NAV */}
       <div style={navWrapper}>
@@ -45,11 +45,28 @@ export default function Home() {
                   active === t ? "2px solid #facc15" : "none",
               }}
             >
-              {t.charAt(0).toUpperCase() + t.slice(1)}
+              {t.replace(/\b\w/g, (c) => c.toUpperCase())}
             </span>
           ))}
         </div>
       </div>
+
+      {/* ================= ABOUT ================= */}
+      {active === "about me" && (
+        <div style={aboutSection}>
+          <h1 style={aboutTitle}>About Me</h1>
+
+          <p style={aboutText}>
+            I am a passionate Frontend Developer focused on building modern,
+            responsive, and impactful web applications.
+          </p>
+
+          <p style={aboutText}>
+            I specialize in React, Next.js, and clean UI/UX design. My goal is
+            to create elegant, fast, and user-friendly digital experiences.
+          </p>
+        </div>
+      )}
 
       {/* ================= SKILLS ================= */}
       {active === "skills" && (
@@ -70,7 +87,7 @@ export default function Home() {
                     e.currentTarget.style.transform =
                       "translateY(-8px) scale(1.05)";
                     e.currentTarget.style.boxShadow =
-                      "0 0 20px rgba(250,204,21,0.5)";
+                      "0 0 20px rgba(250,204,21,0.6)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = "none";
@@ -94,7 +111,7 @@ export default function Home() {
             ))}
           </div>
 
-          {/* ================= EXPERIENCE ================= */}
+          {/* EXPERIENCE */}
           <div style={experienceSection}>
             <h2 style={expTitle}>Experience</h2>
 
@@ -138,7 +155,7 @@ export default function Home() {
                     e.currentTarget.style.transform =
                       "translateY(-8px)";
                     e.currentTarget.style.boxShadow =
-                      "0 0 25px rgba(250,204,21,0.25)";
+                      "0 0 25px rgba(250,204,21,0.3)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = "none";
@@ -152,34 +169,12 @@ export default function Home() {
 
                   <ul style={roleList}>
                     {exp.roles.map((r, idx) => (
-                      <li key={idx} style={roleItem}>
-                        {r}
-                      </li>
+                      <li key={idx}>{r}</li>
                     ))}
                   </ul>
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* ================= CONTACT ================= */}
-      {active === "contact" && (
-        <div style={contactWrapper}>
-          <div style={contactCard}>
-            <h3>Contact Info</h3>
-            <p><FaEnvelope /> mghernandez690@gmail.com</p>
-            <p><FaFacebook /> Mg Hernandez</p>
-            <p><FaInstagram /> progra.mg</p>
-          </div>
-
-          <div style={form}>
-            <h2>Get in touch</h2>
-            <input placeholder="Name" style={input} />
-            <input placeholder="Email" style={input} />
-            <textarea placeholder="Message" style={textarea} />
-            <button style={btnPrimary}>Send</button>
           </div>
         </div>
       )}
@@ -219,6 +214,28 @@ const navStyle: CSSProperties = {
 
 const navItem: CSSProperties = {
   cursor: "pointer",
+};
+
+/* ABOUT */
+
+const aboutSection: CSSProperties = {
+  maxWidth: 700,
+  margin: "80px auto",
+  textAlign: "center",
+};
+
+const aboutTitle: CSSProperties = {
+  fontSize: 42,
+  marginBottom: 20,
+  background: "linear-gradient(to right,#60a5fa,#facc15)",
+  WebkitBackgroundClip: "text",
+  color: "transparent",
+};
+
+const aboutText: CSSProperties = {
+  color: "#ccc",
+  lineHeight: 1.8,
+  marginBottom: 15,
 };
 
 /* SKILLS */
@@ -310,52 +327,8 @@ const company: CSSProperties = {
 
 const school: CSSProperties = {
   color: "#aaa",
-  marginBottom: 10,
 };
 
 const roleList: CSSProperties = {
   paddingLeft: 20,
-};
-
-const roleItem: CSSProperties = {
-  marginBottom: 5,
-};
-
-/* CONTACT */
-
-const contactWrapper: CSSProperties = {
-  display: "flex",
-  gap: 40,
-  marginTop: 80,
-};
-
-const contactCard: CSSProperties = {
-  padding: 20,
-  background: "rgba(255,255,255,0.05)",
-  borderRadius: 15,
-};
-
-const form: CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: 10,
-};
-
-const input: CSSProperties = {
-  padding: 10,
-  borderRadius: 8,
-  border: "none",
-};
-
-const textarea: CSSProperties = {
-  padding: 10,
-  borderRadius: 8,
-  height: 100,
-};
-
-const btnPrimary: CSSProperties = {
-  padding: "10px 20px",
-  background: "#facc15",
-  borderRadius: 8,
-  border: "none",
 };
