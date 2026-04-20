@@ -2,6 +2,20 @@
 
 import { useState, useEffect } from "react";
 
+// ICONS
+import {
+  FaHtml5,
+  FaCss3Alt,
+  FaJs,
+  FaReact,
+  FaServer,
+} from "react-icons/fa";
+
+import {
+  SiNextdotjs,
+  SiTailwindcss,
+} from "react-icons/si";
+
 export default function Home() {
   const [active, setActive] = useState("about");
   const [show, setShow] = useState(true);
@@ -9,7 +23,6 @@ export default function Home() {
   const [animateBars, setAnimateBars] = useState(false);
 
   const fullText = "Frontend Developer";
-
   const tabs = ["about", "skills", "projects", "certs", "contact"];
 
   // TYPEWRITER
@@ -21,7 +34,6 @@ export default function Home() {
       i++;
       if (i === fullText.length) clearInterval(interval);
     }, 50);
-
     return () => clearInterval(interval);
   }, [active]);
 
@@ -32,7 +44,7 @@ export default function Home() {
     return () => clearTimeout(t);
   }, [active]);
 
-  // SKILLS ANIMATION
+  // SKILL ANIMATION
   useEffect(() => {
     if (active === "skills") {
       setAnimateBars(false);
@@ -41,73 +53,29 @@ export default function Home() {
   }, [active]);
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "linear-gradient(135deg, #020617, #07152d, #0b1120)",
-        color: "white",
-        fontFamily: "Arial, sans-serif",
-        padding: "40px",
-      }}
-    >
+    <main style={mainStyle}>
       {/* LOGO */}
-      <div
-        style={{
-          position: "absolute",
-          left: "40px",
-          top: "40px",
-          fontWeight: "bold",
-          fontSize: "18px",
-        }}
-      >
-        <span
-          style={{
-            background: "linear-gradient(to right, #60a5fa, #facc15)",
-            WebkitBackgroundClip: "text",
-            color: "transparent",
-          }}
-        >
-          MG.
-        </span>
-      </div>
+      <div style={logoStyle}>MG.</div>
 
       {/* NAV */}
-      <div style={{ display: "flex", justifyContent: "center", marginBottom: "60px" }}>
-        <div
-          style={{
-            display: "flex",
-            gap: "30px",
-            padding: "14px 30px",
-            borderRadius: "999px",
-            background: "rgba(255,255,255,0.05)",
-            border: "1px solid rgba(255,255,255,0.1)",
-            backdropFilter: "blur(10px)",
-          }}
-        >
+      <div style={navWrapper}>
+        <div style={navStyle}>
           {tabs.map((item) => {
             const label = item.charAt(0).toUpperCase() + item.slice(1);
-
             return (
               <span
                 key={item}
                 onClick={() => setActive(item)}
                 style={{
-                  cursor: "pointer",
-                  position: "relative",
+                  ...navItem,
                   color: active === item ? "#facc15" : "#ccc",
                 }}
               >
                 {label}
-
                 <span
                   style={{
-                    position: "absolute",
-                    left: 0,
-                    bottom: "-4px",
-                    height: "2px",
+                    ...underline,
                     width: active === item ? "100%" : "0%",
-                    background: "#facc15",
-                    transition: "0.3s",
                   }}
                 />
               </span>
@@ -117,54 +85,30 @@ export default function Home() {
       </div>
 
       {/* CONTENT */}
-      <div
-        style={{
-          maxWidth: "1100px",
-          margin: "0 auto",
-          opacity: show ? 1 : 0,
-          transform: show ? "translateY(0)" : "translateY(20px)",
-          transition: "0.4s",
-        }}
-      >
+      <div style={contentStyle(show)}>
         {/* ABOUT */}
         {active === "about" && (
-          <div style={{ display: "flex", gap: "50px", justifyContent: "space-between", alignItems: "center" }}>
-            <div style={{ maxWidth: "520px" }}>
+          <div style={aboutWrapper}>
+            <div>
               <p style={{ color: "#aaa" }}>Hello, I'm</p>
 
-              <h1
-                style={{
-                  fontSize: "64px",
-                  fontWeight: "bold",
-                  background: "linear-gradient(to right, #60a5fa, #facc15)",
-                  WebkitBackgroundClip: "text",
-                  color: "transparent",
-                }}
-              >
-                MG HERNANDEZ
-              </h1>
+              <h1 style={gradientTitle}>MG HERNANDEZ</h1>
 
-              <h2 style={{ color: "#facc15", height: "30px" }}>
-                {text} |
-              </h2>
+              <h2 style={{ color: "#facc15" }}>{text} |</h2>
 
-              <p style={{ color: "#aaa", marginTop: "15px" }}>
-                Even if my vision isn’t always clear, my goals are. I push myself to learn,
-                improve, and build impactful web applications.
+              <p style={desc}>
+                Even if my vision isn’t always clear, my goals are. I push myself
+                to learn, improve, and build impactful web applications.
               </p>
 
-              <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
-                <button onClick={() => setActive("projects")} style={btnOutline}>
-                  View Work
-                </button>
-                <button onClick={() => setActive("contact")} style={btnPrimary}>
-                  Contact Me
-                </button>
+              <div style={{ marginTop: 20 }}>
+                <button style={btnOutline}>View Work</button>
+                <button style={btnPrimary}>Contact Me</button>
               </div>
             </div>
 
             <div style={cardStyle}>
-              <img src="/profile.png" style={{ width: "320px", borderRadius: "18px" }} />
+              <img src="/profile.png" style={{ width: 320, borderRadius: 15 }} />
             </div>
           </div>
         )}
@@ -172,47 +116,37 @@ export default function Home() {
         {/* SKILLS */}
         {active === "skills" && (
           <div>
-            <h2
-              style={{
-                fontSize: "36px",
-                marginBottom: "25px",
-                background: "linear-gradient(to right, #60a5fa, #facc15)",
-                WebkitBackgroundClip: "text",
-                color: "transparent",
-              }}
-            >
-              Skills
-            </h2>
+            <h2 style={skillsTitle}>Skills</h2>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "20px" }}>
+            <div style={gridStyle}>
               {[
-                { name: "HTML", level: 90 },
-                { name: "CSS", level: 90 },
-                { name: "JavaScript", level: 70 },
-                { name: "React", level: 70 },
-                { name: "Next.js", level: 65 },
-                { name: "Tailwind", level: 50 },
+                { name: "HTML", icon: <FaHtml5 />, level: 90 },
+                { name: "CSS", icon: <FaCss3Alt />, level: 90 },
+                { name: "JavaScript", icon: <FaJs />, level: 75 },
+                { name: "React", icon: <FaReact />, level: 70 },
+                { name: "Next.js", icon: <SiNextdotjs />, level: 65 },
+                { name: "Tailwind", icon: <SiTailwindcss />, level: 55 },
+                { name: "XAMPP", icon: <FaServer />, level: 80 },
+                { name: "Laragon", icon: <FaServer />, level: 80 },
               ].map((skill) => (
-                <div
-                  key={skill.name}
-                  style={cardStyle}
-                  onMouseMove={(e) => {
-                    const rect = e.currentTarget.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
+                <div key={skill.name} style={{ textAlign: "center" }}>
+                  {/* ICON */}
+                  <div
+                    style={circleIcon}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "scale(1.1)";
+                      e.currentTarget.style.boxShadow =
+                        "0 0 25px rgba(250,204,21,0.6)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "scale(1)";
+                      e.currentTarget.style.boxShadow = "none";
+                    }}
+                  >
+                    {skill.icon}
+                  </div>
 
-                    const rotateX = (y / rect.height - 0.5) * 10;
-                    const rotateY = (x / rect.width - 0.5) * -10;
-
-                    e.currentTarget.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-                    e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,0,0,0.4)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "rotateX(0) rotateY(0)";
-                    e.currentTarget.style.boxShadow = "none";
-                  }}
-                >
-                  <h3>{skill.name}</h3>
+                  <p>{skill.name}</p>
 
                   <div style={barContainer}>
                     <div
@@ -227,94 +161,136 @@ export default function Home() {
             </div>
           </div>
         )}
-
-        {/* PROJECTS */}
-        {active === "projects" && (
-          <div>
-            <h2 style={{ fontSize: "32px", marginBottom: "20px" }}>Projects</h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "20px" }}>
-              {["Portfolio", "Gowns System", "UI Landing"].map((p) => (
-                <div key={p} style={cardStyle}>
-                  <h3>{p}</h3>
-                  <p style={{ color: "#aaa" }}>Modern responsive project</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* CERTS */}
-        {active === "certs" && (
-          <div>
-            <h2 style={{ fontSize: "32px", marginBottom: "20px" }}>Certificates</h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              <div style={cardStyle}>Web Dev Certificate</div>
-              <div style={cardStyle}>Frontend Certificate</div>
-            </div>
-          </div>
-        )}
-
-        {/* CONTACT */}
-        {active === "contact" && (
-          <div style={{ maxWidth: "400px" }}>
-            <h2 style={{ fontSize: "32px", marginBottom: "20px" }}>Contact</h2>
-
-            <input placeholder="Email" style={inputStyle} />
-            <textarea placeholder="Message" style={inputStyle} />
-
-            <button style={btnPrimary}>Send</button>
-          </div>
-        )}
       </div>
     </main>
   );
 }
 
-// STYLES
-const cardStyle = {
-  padding: "20px",
+/* ================== STYLES ================== */
+
+const mainStyle = {
+  minHeight: "100vh",
+  background: "linear-gradient(135deg,#020617,#07152d,#0b1120)",
+  color: "white",
+  padding: "40px",
+};
+
+const logoStyle = {
+  position: "absolute",
+  left: 40,
+  top: 40,
+  fontWeight: "bold",
+  fontSize: 18,
+  background: "linear-gradient(to right,#60a5fa,#facc15)",
+  WebkitBackgroundClip: "text",
+  color: "transparent",
+};
+
+const navWrapper = { display: "flex", justifyContent: "center", marginBottom: 60 };
+
+const navStyle = {
+  display: "flex",
+  gap: 30,
+  padding: "14px 30px",
+  borderRadius: 999,
   background: "rgba(255,255,255,0.05)",
-  border: "1px solid rgba(255,255,255,0.1)",
-  borderRadius: "12px",
-  transition: "all 0.3s ease",
+};
+
+const navItem = {
+  cursor: "pointer",
+  position: "relative",
+};
+
+const underline = {
+  position: "absolute",
+  height: 2,
+  bottom: -4,
+  left: 0,
+  background: "#facc15",
+  transition: "0.3s",
+};
+
+const contentStyle = (show) => ({
+  maxWidth: 1100,
+  margin: "0 auto",
+  opacity: show ? 1 : 0,
+  transform: show ? "translateY(0)" : "translateY(20px)",
+  transition: "0.4s",
+});
+
+const aboutWrapper = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+};
+
+const gradientTitle = {
+  fontSize: 60,
+  fontWeight: "bold",
+  background: "linear-gradient(to right,#60a5fa,#facc15)",
+  WebkitBackgroundClip: "text",
+  color: "transparent",
+};
+
+const desc = { color: "#aaa", marginTop: 10 };
+
+const btnPrimary = {
+  marginLeft: 10,
+  padding: "10px 20px",
+  background: "#facc15",
+  color: "black",
+  borderRadius: 8,
+};
+
+const btnOutline = {
+  padding: "10px 20px",
+  border: "1px solid #fff",
+  borderRadius: 8,
+};
+
+const cardStyle = {
+  padding: 20,
+  borderRadius: 12,
+  background: "rgba(255,255,255,0.05)",
+};
+
+const skillsTitle = {
+  textAlign: "center",
+  fontSize: 36,
+  marginBottom: 40,
+  background: "linear-gradient(to right,#60a5fa,#facc15)",
+  WebkitBackgroundClip: "text",
+  color: "transparent",
+};
+
+const gridStyle = {
+  display: "grid",
+  gridTemplateColumns: "repeat(4,1fr)",
+  gap: 40,
+};
+
+const circleIcon = {
+  width: 80,
+  height: 80,
+  borderRadius: "50%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  fontSize: 32,
+  margin: "0 auto 10px",
+  background: "rgba(255,255,255,0.05)",
+  transition: "0.3s",
 };
 
 const barContainer = {
-  marginTop: "10px",
-  height: "6px",
+  height: 6,
   background: "rgba(255,255,255,0.1)",
-  borderRadius: "10px",
+  borderRadius: 10,
   overflow: "hidden",
 };
 
 const barFill = {
   height: "100%",
-  background: "linear-gradient(to right, #60a5fa, #facc15)",
-  boxShadow: "0 0 10px rgba(250, 204, 21, 0.7)",
-  transition: "1s ease",
-};
-
-const inputStyle = {
-  width: "100%",
-  padding: "10px",
-  marginBottom: "10px",
-  borderRadius: "8px",
-  border: "1px solid rgba(255,255,255,0.2)",
-  background: "transparent",
-  color: "white",
-};
-
-const btnPrimary = {
-  padding: "10px 20px",
-  background: "#facc15",
-  color: "black",
-  borderRadius: "8px",
-};
-
-const btnOutline = {
-  padding: "10px 20px",
-  border: "1px solid rgba(255,255,255,0.2)",
-  background: "transparent",
-  color: "white",
-  borderRadius: "8px",
+  background: "linear-gradient(to right,#60a5fa,#facc15)",
+  transition: "1s",
 };
