@@ -11,11 +11,7 @@ import {
   FaReact,
   FaServer,
 } from "react-icons/fa";
-
-import {
-  SiNextdotjs,
-  SiTailwindcss,
-} from "react-icons/si";
+import { SiNextdotjs, SiTailwindcss } from "react-icons/si";
 
 export default function Home() {
   const [active, setActive] = useState("about");
@@ -34,7 +30,7 @@ export default function Home() {
       setText(fullText.slice(0, i + 1));
       i++;
       if (i === fullText.length) clearInterval(interval);
-    }, 50);
+    }, 40);
     return () => clearInterval(interval);
   }, [active]);
 
@@ -52,6 +48,16 @@ export default function Home() {
       setTimeout(() => setAnimateBars(true), 200);
     }
   }, [active]);
+
+  const getGlow = (name: string) => {
+    if (name === "HTML") return "0 0 30px #f97316";
+    if (name === "CSS") return "0 0 30px #3b82f6";
+    if (name === "JavaScript") return "0 0 30px #facc15";
+    if (name === "React") return "0 0 30px #22d3ee";
+    if (name === "Next.js") return "0 0 30px #ffffff";
+    if (name === "Tailwind") return "0 0 30px #38bdf8";
+    return "0 0 30px rgba(250,204,21,0.8)";
+  };
 
   return (
     <main style={mainStyle}>
@@ -138,12 +144,13 @@ export default function Home() {
                   <div
                     style={circleIcon}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = "scale(1.1)";
-                      e.currentTarget.style.boxShadow =
-                        "0 0 25px rgba(250,204,21,0.6)";
+                      e.currentTarget.style.transform =
+                        "rotateX(12deg) rotateY(-12deg) scale(1.1)";
+                      e.currentTarget.style.boxShadow = getGlow(skill.name);
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = "scale(1)";
+                      e.currentTarget.style.transform =
+                        "rotateX(0deg) rotateY(0deg) scale(1)";
                       e.currentTarget.style.boxShadow = "none";
                     }}
                   >
@@ -170,7 +177,7 @@ export default function Home() {
   );
 }
 
-/* ================== STYLES ================== */
+/* ================= STYLES ================= */
 
 const mainStyle: CSSProperties = {
   minHeight: "100vh",
@@ -290,7 +297,8 @@ const circleIcon: CSSProperties = {
   fontSize: 32,
   margin: "0 auto 10px",
   background: "rgba(255,255,255,0.05)",
-  transition: "0.3s",
+  transition: "all 0.3s ease",
+  transformStyle: "preserve-3d",
 };
 
 const barContainer: CSSProperties = {
