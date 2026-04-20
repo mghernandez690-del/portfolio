@@ -14,7 +14,7 @@ export default function Home() {
   const [active, setActive] = useState("about me");
   const [animate, setAnimate] = useState(false);
 
-  /* ================= TYPEWRITER FIX ================= */
+  /* ================= TYPEWRITER ================= */
   const roles = ["Frontend Developer", "Web Developer", "UI Designer"];
   const [text, setText] = useState("");
   const [index, setIndex] = useState(0);
@@ -44,7 +44,7 @@ export default function Home() {
     return () => clearTimeout(timeout);
   }, [subIndex, deleting, index]);
 
-  /* ================= SKILLS ================= */
+  /* ================= SKILLS ANIMATION ================= */
   useEffect(() => {
     if (active === "skills") {
       setAnimate(false);
@@ -83,6 +83,7 @@ export default function Home() {
         <div style={heroSection}>
           <div>
             <p>Hello, I'm</p>
+
             <h1 style={heroName}>MG HERNANDEZ</h1>
 
             <h2 style={heroRole}>
@@ -99,8 +100,20 @@ export default function Home() {
             </div>
           </div>
 
-          <div style={imageCard}>
-            <img src="/profile.jpg" style={heroImage} />
+          {/* PROFILE IMAGE FIXED */}
+          <div
+            style={imageCard}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "scale(1.05)";
+              e.currentTarget.style.boxShadow = "0 0 60px #facc15";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.boxShadow =
+                "0 0 30px rgba(250,204,21,0.3)";
+            }}
+          >
+            <img src="/profile.png" style={heroImage} />
           </div>
         </div>
       )}
@@ -187,6 +200,7 @@ const logoStyle: CSSProperties = {
   position: "absolute",
   top: 30,
   left: 30,
+  fontWeight: "bold",
 };
 
 const navWrapper: CSSProperties = {
@@ -197,6 +211,9 @@ const navWrapper: CSSProperties = {
 const navStyle: CSSProperties = {
   display: "flex",
   gap: 25,
+  background: "rgba(255,255,255,0.05)",
+  padding: "10px 25px",
+  borderRadius: 50,
 };
 
 const navItem: CSSProperties = {
@@ -208,15 +225,18 @@ const navItem: CSSProperties = {
 const heroSection: CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
-  marginTop: 80,
+  marginTop: 100,
+  alignItems: "center",
 };
 
 const heroName: CSSProperties = {
-  fontSize: 48,
+  fontSize: 55,
+  fontWeight: "bold",
 };
 
 const heroRole: CSSProperties = {
   color: "#facc15",
+  fontSize: 24,
 };
 
 const cursor: CSSProperties = {
@@ -225,24 +245,40 @@ const cursor: CSSProperties = {
 
 const heroDesc: CSSProperties = {
   color: "#ccc",
+  marginTop: 10,
 };
 
 const btnPrimary: CSSProperties = {
   background: "#facc15",
-  padding: 10,
+  padding: "10px 20px",
+  borderRadius: 10,
+  border: "none",
 };
 
 const btnOutline: CSSProperties = {
   border: "1px solid white",
-  padding: 10,
+  padding: "10px 20px",
+  borderRadius: 10,
+  background: "transparent",
+  color: "white",
 };
 
+/* IMAGE FIXED */
+
 const imageCard: CSSProperties = {
-  boxShadow: "0 0 30px #facc15",
+  borderRadius: "20px",
+  padding: "10px",
+  background: "rgba(255,255,255,0.05)",
+  backdropFilter: "blur(10px)",
+  boxShadow: "0 0 30px rgba(250,204,21,0.3)",
+  transition: "0.4s",
 };
 
 const heroImage: CSSProperties = {
-  width: 250,
+  width: "280px",
+  height: "380px",
+  objectFit: "cover",
+  borderRadius: "15px",
 };
 
 /* SKILLS */
@@ -267,11 +303,14 @@ const circleIcon: CSSProperties = {
 const barContainer: CSSProperties = {
   height: 6,
   background: "#222",
+  borderRadius: 10,
+  overflow: "hidden",
 };
 
 const barFill: CSSProperties = {
   height: "100%",
-  background: "gold",
+  background: "linear-gradient(90deg,#60a5fa,#facc15)",
+  transition: "1s",
 };
 
 /* EXPERIENCE */
@@ -280,4 +319,5 @@ const expCard: CSSProperties = {
   background: "#111",
   padding: 20,
   marginTop: 20,
+  borderRadius: 15,
 };
