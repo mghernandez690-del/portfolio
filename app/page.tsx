@@ -7,6 +7,9 @@ import {
   FaCss3Alt,
   FaJs,
   FaReact,
+  FaFacebook,
+  FaInstagram,
+  FaEnvelope,
 } from "react-icons/fa";
 import { SiNextdotjs, SiTailwindcss } from "react-icons/si";
 
@@ -14,7 +17,7 @@ export default function Home() {
   const [active, setActive] = useState("about me");
   const [animate, setAnimate] = useState(false);
 
-  /* ================= TYPEWRITER ================= */
+  /* TYPEWRITER FIXED */
   const roles = ["Frontend Developer", "Web Developer", "UI Designer"];
   const [text, setText] = useState("");
   const [index, setIndex] = useState(0);
@@ -27,9 +30,7 @@ export default function Home() {
         setText(roles[index].substring(0, subIndex + 1));
         setSubIndex((prev) => prev + 1);
 
-        if (subIndex === roles[index].length) {
-          setDeleting(true);
-        }
+        if (subIndex === roles[index].length) setDeleting(true);
       } else {
         setText(roles[index].substring(0, subIndex - 1));
         setSubIndex((prev) => prev - 1);
@@ -44,7 +45,6 @@ export default function Home() {
     return () => clearTimeout(timeout);
   }, [subIndex, deleting, index]);
 
-  /* ================= SKILLS ANIMATION ================= */
   useEffect(() => {
     if (active === "skills") {
       setAnimate(false);
@@ -78,16 +78,15 @@ export default function Home() {
         </div>
       </div>
 
-      {/* HERO */}
+      {/* ABOUT */}
       {active === "about me" && (
         <div style={heroSection}>
           <div>
             <p>Hello, I'm</p>
-
             <h1 style={heroName}>MG HERNANDEZ</h1>
 
             <h2 style={heroRole}>
-              {text} <span style={cursor}>|</span>
+              {text} <span>|</span>
             </h2>
 
             <p style={heroDesc}>
@@ -100,19 +99,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* PROFILE IMAGE FIXED */}
-          <div
-            style={imageCard}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "scale(1.05)";
-              e.currentTarget.style.boxShadow = "0 0 60px #facc15";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.boxShadow =
-                "0 0 30px rgba(250,204,21,0.3)";
-            }}
-          >
+          <div style={imageCard}>
             <img src="/profile.png" style={heroImage} />
           </div>
         </div>
@@ -131,21 +118,7 @@ export default function Home() {
               { name: "Tailwind", icon: <SiTailwindcss />, level: 65 },
             ].map((skill) => (
               <div key={skill.name} style={{ textAlign: "center" }}>
-                <div
-                  style={circleIcon}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.boxShadow =
-                      "0 0 25px #facc15";
-                    e.currentTarget.style.transform = "scale(1.1)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.boxShadow = "none";
-                    e.currentTarget.style.transform = "scale(1)";
-                  }}
-                >
-                  {skill.icon}
-                </div>
-
+                <div style={circleIcon}>{skill.icon}</div>
                 <p>{skill.name}</p>
 
                 <div style={barContainer}>
@@ -172,14 +145,26 @@ export default function Home() {
                   <li>Photojournalist (2023–2024)</li>
                 </ul>
               </div>
-
-              <div style={expCard}>
-                <h3>ICPEP.se</h3>
-                <ul>
-                  <li>Treasurer (2024–2026)</li>
-                </ul>
-              </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* CONTACT (FIXED + ADDED) */}
+      {active === "contact" && (
+        <div style={contactWrapper}>
+          <h2>Get in Touch</h2>
+
+          <div style={contactCard}>
+            <p>
+              <FaEnvelope /> mghernandez690@gmail.com
+            </p>
+            <p>
+              <FaInstagram /> progra.mg
+            </p>
+            <p>
+              <FaFacebook /> Mg Hernandez
+            </p>
           </div>
         </div>
       )}
@@ -187,7 +172,7 @@ export default function Home() {
   );
 }
 
-/* ================= STYLES ================= */
+/* STYLES */
 
 const mainStyle: CSSProperties = {
   minHeight: "100vh",
@@ -200,7 +185,6 @@ const logoStyle: CSSProperties = {
   position: "absolute",
   top: 30,
   left: 30,
-  fontWeight: "bold",
 };
 
 const navWrapper: CSSProperties = {
@@ -221,57 +205,43 @@ const navItem: CSSProperties = {
 };
 
 /* HERO */
-
 const heroSection: CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
-  marginTop: 100,
   alignItems: "center",
+  marginTop: 100,
+  gap: "80px",
 };
 
 const heroName: CSSProperties = {
   fontSize: 55,
-  fontWeight: "bold",
 };
 
 const heroRole: CSSProperties = {
   color: "#facc15",
-  fontSize: 24,
-};
-
-const cursor: CSSProperties = {
-  animation: "blink 1s infinite",
 };
 
 const heroDesc: CSSProperties = {
   color: "#ccc",
-  marginTop: 10,
 };
 
 const btnPrimary: CSSProperties = {
   background: "#facc15",
   padding: "10px 20px",
   borderRadius: 10,
-  border: "none",
 };
 
 const btnOutline: CSSProperties = {
   border: "1px solid white",
   padding: "10px 20px",
   borderRadius: 10,
-  background: "transparent",
-  color: "white",
 };
-
-/* IMAGE FIXED */
 
 const imageCard: CSSProperties = {
   borderRadius: "20px",
   padding: "10px",
   background: "rgba(255,255,255,0.05)",
-  backdropFilter: "blur(10px)",
   boxShadow: "0 0 30px rgba(250,204,21,0.3)",
-  transition: "0.4s",
 };
 
 const heroImage: CSSProperties = {
@@ -282,11 +252,10 @@ const heroImage: CSSProperties = {
 };
 
 /* SKILLS */
-
 const gridStyle: CSSProperties = {
   display: "grid",
-  gridTemplateColumns: "repeat(3,1fr)",
-  gap: 40,
+  gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))",
+  gap: "60px",
 };
 
 const circleIcon: CSSProperties = {
@@ -297,14 +266,12 @@ const circleIcon: CSSProperties = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  transition: "0.3s",
 };
 
 const barContainer: CSSProperties = {
   height: 6,
   background: "#222",
   borderRadius: 10,
-  overflow: "hidden",
 };
 
 const barFill: CSSProperties = {
@@ -314,10 +281,26 @@ const barFill: CSSProperties = {
 };
 
 /* EXPERIENCE */
-
 const expCard: CSSProperties = {
   background: "#111",
   padding: 20,
   marginTop: 20,
   borderRadius: 15,
+  borderLeft: "3px solid #facc15",
+};
+
+/* CONTACT */
+const contactWrapper: CSSProperties = {
+  textAlign: "center",
+  marginTop: 100,
+};
+
+const contactCard: CSSProperties = {
+  background: "#111",
+  padding: 30,
+  borderRadius: 15,
+  maxWidth: 400,
+  margin: "auto",
+  marginTop: 20,
+  lineHeight: "2",
 };
