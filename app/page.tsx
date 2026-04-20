@@ -5,7 +5,23 @@ import { useState, useEffect } from "react";
 export default function Home() {
   const [active, setActive] = useState("about");
   const [show, setShow] = useState(true);
+  const [text, setText] = useState("");
 
+  const fullText = "Frontend Developer";
+
+  // TYPEWRITER
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      setText(fullText.slice(0, i + 1));
+      i++;
+      if (i === fullText.length) clearInterval(interval);
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, [active]);
+
+  // TRANSITION
   useEffect(() => {
     setShow(false);
     const t = setTimeout(() => setShow(true), 200);
@@ -23,15 +39,17 @@ export default function Home() {
       }}
     >
       {/* NAV */}
-      <div style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}>
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: "60px" }}>
         <div
           style={{
             display: "flex",
-            gap: "20px",
-            padding: "10px 20px",
+            gap: "30px",
+            padding: "14px 30px",
             borderRadius: "999px",
             background: "rgba(255,255,255,0.05)",
             border: "1px solid rgba(255,255,255,0.1)",
+            backdropFilter: "blur(10px)",
+            fontSize: "16px",
           }}
         >
           {["about", "projects", "certs", "contact"].map((item) => (
@@ -40,12 +58,27 @@ export default function Home() {
               onClick={() => setActive(item)}
               style={{
                 cursor: "pointer",
+                position: "relative",
                 color: active === item ? "#facc15" : "#ccc",
-                borderBottom: active === item ? "2px solid #facc15" : "none",
-                paddingBottom: "2px",
+                transition: "0.3s",
               }}
             >
               {item}
+
+              {/* underline */}
+              {active === item && (
+                <span
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    bottom: "-4px",
+                    width: "100%",
+                    height: "2px",
+                    background: "#facc15",
+                    borderRadius: "10px",
+                  }}
+                />
+              )}
             </span>
           ))}
         </div>
@@ -63,40 +96,44 @@ export default function Home() {
       >
         {/* ABOUT */}
         {active === "about" && (
-          <div style={{ display: "flex", gap: "40px", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ maxWidth: "500px" }}>
-              <p style={{ color: "#aaa" }}>Hello, I'm</p>
+          <div style={{ display: "flex", gap: "50px", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ maxWidth: "520px" }}>
+              <p style={{ color: "#aaa", marginBottom: "5px" }}>Hello, I'm</p>
 
               <h1
                 style={{
-                  fontSize: "60px",
+                  fontSize: "64px",
                   fontWeight: "bold",
                   background: "linear-gradient(to right, #60a5fa, #facc15)",
                   WebkitBackgroundClip: "text",
                   color: "transparent",
+                  marginBottom: "10px",
                 }}
               >
                 MG HERNANDEZ
               </h1>
 
-              <h2 style={{ color: "#facc15", marginTop: "10px" }}>
-                Frontend Developer
+              {/* TYPEWRITER */}
+              <h2 style={{ color: "#facc15", height: "30px" }}>
+                {text}
+                <span style={{ marginLeft: "5px", animation: "blink 1s infinite" }}>|</span>
               </h2>
 
-              <p style={{ color: "#aaa", marginTop: "15px", lineHeight: "1.6" }}>
+              <p style={{ color: "#aaa", marginTop: "15px", lineHeight: "1.7" }}>
                 Even if my vision isn’t always clear, my goals are. I push myself to learn,
                 improve, and build impactful web applications.
               </p>
 
-              <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
+              <div style={{ marginTop: "25px", display: "flex", gap: "12px" }}>
                 <button
                   onClick={() => setActive("projects")}
                   style={{
-                    padding: "10px 20px",
+                    padding: "12px 24px",
                     border: "1px solid rgba(255,255,255,0.2)",
                     background: "transparent",
                     color: "white",
-                    borderRadius: "8px",
+                    borderRadius: "10px",
+                    transition: "0.3s",
                   }}
                 >
                   View Work
@@ -105,11 +142,11 @@ export default function Home() {
                 <button
                   onClick={() => setActive("contact")}
                   style={{
-                    padding: "10px 20px",
+                    padding: "12px 24px",
                     background: "linear-gradient(to right, #facc15, #fb923c)",
                     color: "black",
                     border: "none",
-                    borderRadius: "8px",
+                    borderRadius: "10px",
                     fontWeight: "bold",
                   }}
                 >
@@ -121,18 +158,18 @@ export default function Home() {
             {/* IMAGE */}
             <div
               style={{
-                padding: "10px",
-                borderRadius: "20px",
+                padding: "12px",
+                borderRadius: "25px",
                 background: "rgba(255,255,255,0.05)",
                 border: "1px solid rgba(255,255,255,0.1)",
-                transition: "transform 0.3s ease",
+                transition: "0.3s",
               }}
             >
               <img
                 src="/profile.png"
                 style={{
-                  width: "300px",
-                  borderRadius: "15px",
+                  width: "320px",
+                  borderRadius: "18px",
                 }}
               />
             </div>
@@ -142,18 +179,17 @@ export default function Home() {
         {/* PROJECTS */}
         {active === "projects" && (
           <div>
-            <h2 style={{ fontSize: "30px", marginBottom: "20px" }}>Projects</h2>
+            <h2 style={{ fontSize: "32px", marginBottom: "20px" }}>Projects</h2>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "20px" }}>
               {["Portfolio Website", "Gowns & Golds", "UI Landing"].map((p) => (
                 <div
                   key={p}
                   style={{
-                    padding: "20px",
+                    padding: "25px",
                     background: "rgba(255,255,255,0.05)",
                     border: "1px solid rgba(255,255,255,0.1)",
-                    borderRadius: "10px",
-                    transition: "transform 0.3s",
+                    borderRadius: "12px",
                   }}
                 >
                   <h3>{p}</h3>
@@ -169,7 +205,7 @@ export default function Home() {
         {/* CERTS */}
         {active === "certs" && (
           <div>
-            <h2 style={{ fontSize: "30px", marginBottom: "20px" }}>Certificates</h2>
+            <h2 style={{ fontSize: "32px", marginBottom: "20px" }}>Certificates</h2>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               <div style={{ padding: "15px", background: "rgba(255,255,255,0.05)", borderRadius: "10px" }}>
@@ -185,41 +221,18 @@ export default function Home() {
         {/* CONTACT */}
         {active === "contact" && (
           <div style={{ maxWidth: "400px" }}>
-            <h2 style={{ fontSize: "30px", marginBottom: "20px" }}>Contact</h2>
+            <h2 style={{ fontSize: "32px", marginBottom: "20px" }}>Contact</h2>
 
-            <input
-              placeholder="Email"
-              style={{
-                width: "100%",
-                padding: "10px",
-                marginBottom: "10px",
-                borderRadius: "8px",
-                border: "1px solid rgba(255,255,255,0.2)",
-                background: "transparent",
-                color: "white",
-              }}
-            />
-
-            <textarea
-              placeholder="Message"
-              style={{
-                width: "100%",
-                padding: "10px",
-                marginBottom: "10px",
-                borderRadius: "8px",
-                border: "1px solid rgba(255,255,255,0.2)",
-                background: "transparent",
-                color: "white",
-              }}
-            />
+            <input placeholder="Email" style={inputStyle} />
+            <textarea placeholder="Message" style={inputStyle} />
 
             <button
               style={{
                 width: "100%",
-                padding: "10px",
+                padding: "12px",
                 background: "#facc15",
                 color: "black",
-                borderRadius: "8px",
+                borderRadius: "10px",
                 fontWeight: "bold",
               }}
             >
@@ -231,3 +244,13 @@ export default function Home() {
     </main>
   );
 }
+
+const inputStyle = {
+  width: "100%",
+  padding: "12px",
+  marginBottom: "10px",
+  borderRadius: "8px",
+  border: "1px solid rgba(255,255,255,0.2)",
+  background: "transparent",
+  color: "white",
+};
