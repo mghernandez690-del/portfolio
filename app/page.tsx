@@ -7,9 +7,6 @@ import {
   FaCss3Alt,
   FaJs,
   FaReact,
-  FaFacebook,
-  FaInstagram,
-  FaEnvelope,
 } from "react-icons/fa";
 import { SiNextdotjs, SiTailwindcss } from "react-icons/si";
 
@@ -17,14 +14,42 @@ export default function Home() {
   const [active, setActive] = useState("about me");
   const [animate, setAnimate] = useState(false);
 
-  const tabs = ["about me", "skills", "projects", "certs", "contact"];
+  /* ================= TYPEWRITER ================= */
+  const roles = ["Frontend Developer", "UI Designer", "Web Developer"];
+  const [text, setText] = useState("");
+  const [index, setIndex] = useState(0);
+  const [subIndex, setSubIndex] = useState(0);
+  const [deleting, setDeleting] = useState(false);
 
+  useEffect(() => {
+    if (subIndex === roles[index].length + 1 && !deleting) {
+      setTimeout(() => setDeleting(true), 1000);
+      return;
+    }
+
+    if (subIndex === 0 && deleting) {
+      setDeleting(false);
+      setIndex((prev) => (prev + 1) % roles.length);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setSubIndex((prev) => prev + (deleting ? -1 : 1));
+      setText(roles[index].substring(0, subIndex));
+    }, deleting ? 50 : 100);
+
+    return () => clearTimeout(timeout);
+  }, [subIndex, deleting, index]);
+
+  /* ================= SKILL ANIMATION ================= */
   useEffect(() => {
     if (active === "skills") {
       setAnimate(false);
       setTimeout(() => setAnimate(true), 200);
     }
   }, [active]);
+
+  const tabs = ["about me", "skills", "projects", "certs", "contact"];
 
   return (
     <main style={mainStyle}>
@@ -51,6 +76,28 @@ export default function Home() {
         </div>
       </div>
 
+      {/* ================= HERO ================= */}
+      <div style={heroSection}>
+        <div>
+          <p>Hello, I'm</p>
+
+          <h1 style={heroName}>MG HERNANDEZ</h1>
+
+          <h2 style={heroRole}>
+            {text} <span style={cursor}>|</span>
+          </h2>
+
+          <p style={heroDesc}>
+            Even if my vision isn’t always clear, my goals are. I push myself to
+            learn, improve, and build impactful web applications.
+          </p>
+        </div>
+
+        <div style={imageWrapper}>
+          <img src="/profile.jpg" alt="profile" style={heroImage} />
+        </div>
+      </div>
+
       {/* ================= ABOUT ================= */}
       {active === "about me" && (
         <div style={aboutSection}>
@@ -62,119 +109,79 @@ export default function Home() {
           </p>
 
           <p style={aboutText}>
-            I specialize in React, Next.js, and clean UI/UX design. My goal is
-            to create elegant, fast, and user-friendly digital experiences.
+            I specialize in React, Next.js, and clean UI/UX design.
           </p>
         </div>
       )}
 
       {/* ================= SKILLS ================= */}
       {active === "skills" && (
-        <div>
-          <div style={gridStyle}>
-            {[
-              { name: "HTML", icon: <FaHtml5 />, level: 90 },
-              { name: "CSS", icon: <FaCss3Alt />, level: 90 },
-              { name: "JavaScript", icon: <FaJs />, level: 85 },
-              { name: "React", icon: <FaReact />, level: 75 },
-              { name: "Next.js", icon: <SiNextdotjs />, level: 70 },
-              { name: "Tailwind", icon: <SiTailwindcss />, level: 65 },
-            ].map((skill) => (
-              <div key={skill.name} style={{ textAlign: "center" }}>
+        <div style={gridStyle}>
+          {[
+            { name: "HTML", icon: <FaHtml5 />, level: 90 },
+            { name: "CSS", icon: <FaCss3Alt />, level: 90 },
+            { name: "JavaScript", icon: <FaJs />, level: 85 },
+            { name: "React", icon: <FaReact />, level: 75 },
+            { name: "Next.js", icon: <SiNextdotjs />, level: 70 },
+            { name: "Tailwind", icon: <SiTailwindcss />, level: 65 },
+          ].map((skill) => (
+            <div key={skill.name} style={{ textAlign: "center" }}>
+              <div style={circleIcon}>{skill.icon}</div>
+              <p>{skill.name}</p>
+
+              <div style={barContainer}>
                 <div
-                  style={circleIcon}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform =
-                      "translateY(-8px) scale(1.05)";
-                    e.currentTarget.style.boxShadow =
-                      "0 0 20px rgba(250,204,21,0.6)";
+                  style={{
+                    ...barFill,
+                    width: animate ? `${skill.level}%` : "0%",
                   }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "none";
-                    e.currentTarget.style.boxShadow = "none";
-                  }}
-                >
-                  {skill.icon}
-                </div>
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
-                <p style={{ marginBottom: 10 }}>{skill.name}</p>
+      {/* ================= EXPERIENCE ================= */}
+      {active === "skills" && (
+        <div style={experienceSection}>
+          <h2 style={expTitle}>Experience</h2>
 
-                <div style={barContainer}>
-                  <div
-                    style={{
-                      ...barFill,
-                      width: animate ? `${skill.level}%` : "0%",
-                    }}
-                  />
-                </div>
+          <div style={timeline}>
+            {[
+              {
+                title: "THE MATRIX TODAY",
+                roles: [
+                  "Media Assistant Director (2024–2025)",
+                  "Photojournalist (2023–2024)",
+                ],
+              },
+              {
+                title: "ICPEP.se",
+                roles: ["Treasurer (2024–2026)"],
+              },
+              {
+                title: "NSTP CWTS",
+                roles: ["Head Documentation (2023–2024)"],
+              },
+              {
+                title: "Student Volunteer",
+                roles: ["Member (2023–2026)"],
+              },
+              {
+                title: "DSWD Cash for Work",
+                roles: ["Community Work Participant"],
+              },
+            ].map((exp, i) => (
+              <div key={i} style={expCard}>
+                <h3>{exp.title}</h3>
+                <ul>
+                  {exp.roles.map((r, idx) => (
+                    <li key={idx}>{r}</li>
+                  ))}
+                </ul>
               </div>
             ))}
-          </div>
-
-          {/* EXPERIENCE */}
-          <div style={experienceSection}>
-            <h2 style={expTitle}>Experience</h2>
-
-            <div style={timeline}>
-              <div style={line}></div>
-
-              {[
-                {
-                  org: "THE MATRIX TODAY",
-                  school: "Marinduque State University",
-                  roles: [
-                    "Media Assistant Director (2024–2025)",
-                    "Photojournalist (2023–2024)",
-                  ],
-                },
-                {
-                  org: "ICPEP.se",
-                  school: "Marinduque State University",
-                  roles: ["Treasurer (2024–2026)"],
-                },
-                {
-                  org: "NSTP CWTS",
-                  school: "Marinduque State University",
-                  roles: ["Head Documentation (2023–2024)"],
-                },
-                {
-                  org: "Student Volunteer",
-                  school: "Marinduque State University",
-                  roles: ["Member (2023–2026)"],
-                },
-                {
-                  org: "DSWD Cash for Work",
-                  school: "Government Program",
-                  roles: ["Community Work Participant"],
-                },
-              ].map((exp, i) => (
-                <div
-                  key={i}
-                  style={expCard}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform =
-                      "translateY(-8px)";
-                    e.currentTarget.style.boxShadow =
-                      "0 0 25px rgba(250,204,21,0.3)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "none";
-                    e.currentTarget.style.boxShadow = "none";
-                  }}
-                >
-                  <div style={dot}></div>
-
-                  <h3 style={company}>{exp.org}</h3>
-                  <p style={school}>{exp.school}</p>
-
-                  <ul style={roleList}>
-                    {exp.roles.map((r, idx) => (
-                      <li key={idx}>{r}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       )}
@@ -216,6 +223,51 @@ const navItem: CSSProperties = {
   cursor: "pointer",
 };
 
+/* HERO */
+
+const heroSection: CSSProperties = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginTop: 50,
+};
+
+const heroName: CSSProperties = {
+  fontSize: 48,
+  fontWeight: "bold",
+  background: "linear-gradient(to right,#60a5fa,#facc15)",
+  WebkitBackgroundClip: "text",
+  color: "transparent",
+};
+
+const heroRole: CSSProperties = {
+  color: "#facc15",
+  marginTop: 10,
+};
+
+const cursor: CSSProperties = {
+  marginLeft: 5,
+  animation: "blink 1s infinite",
+};
+
+const heroDesc: CSSProperties = {
+  color: "#ccc",
+  marginTop: 10,
+};
+
+const imageWrapper: CSSProperties = {
+  padding: 10,
+  borderRadius: 20,
+  background: "rgba(255,255,255,0.05)",
+  boxShadow: "0 0 30px rgba(250,204,21,0.3)",
+  animation: "float 4s ease-in-out infinite",
+};
+
+const heroImage: CSSProperties = {
+  width: 250,
+  borderRadius: 20,
+};
+
 /* ABOUT */
 
 const aboutSection: CSSProperties = {
@@ -226,16 +278,10 @@ const aboutSection: CSSProperties = {
 
 const aboutTitle: CSSProperties = {
   fontSize: 42,
-  marginBottom: 20,
-  background: "linear-gradient(to right,#60a5fa,#facc15)",
-  WebkitBackgroundClip: "text",
-  color: "transparent",
 };
 
 const aboutText: CSSProperties = {
   color: "#ccc",
-  lineHeight: 1.8,
-  marginBottom: 15,
 };
 
 /* SKILLS */
@@ -244,6 +290,7 @@ const gridStyle: CSSProperties = {
   display: "grid",
   gridTemplateColumns: "repeat(3,1fr)",
   gap: 40,
+  marginTop: 50,
 };
 
 const circleIcon: CSSProperties = {
@@ -255,80 +302,40 @@ const circleIcon: CSSProperties = {
   justifyContent: "center",
   margin: "0 auto 10px",
   background: "rgba(255,255,255,0.05)",
-  fontSize: 30,
-  transition: "all 0.3s ease",
 };
 
 const barContainer: CSSProperties = {
   height: 6,
   background: "rgba(255,255,255,0.1)",
-  borderRadius: 10,
 };
 
 const barFill: CSSProperties = {
   height: "100%",
   background: "linear-gradient(to right,#60a5fa,#facc15)",
-  transition: "width 1.2s ease-in-out",
+  transition: "width 1s",
 };
 
 /* EXPERIENCE */
 
 const experienceSection: CSSProperties = {
-  marginTop: 100,
+  marginTop: 80,
 };
 
 const expTitle: CSSProperties = {
-  fontSize: 36,
   textAlign: "center",
-  marginBottom: 40,
+  fontSize: 32,
 };
 
 const timeline: CSSProperties = {
-  position: "relative",
-  paddingLeft: 40,
   maxWidth: 700,
-  margin: "0 auto",
+  margin: "40px auto",
   display: "flex",
   flexDirection: "column",
-  gap: 30,
-};
-
-const line: CSSProperties = {
-  position: "absolute",
-  left: 15,
-  top: 0,
-  bottom: 0,
-  width: 2,
-  background: "linear-gradient(#60a5fa,#facc15)",
-};
-
-const dot: CSSProperties = {
-  position: "absolute",
-  left: -34,
-  top: 20,
-  width: 10,
-  height: 10,
-  borderRadius: "50%",
-  background: "#facc15",
+  gap: 20,
 };
 
 const expCard: CSSProperties = {
-  position: "relative",
   background: "rgba(255,255,255,0.05)",
-  padding: 25,
-  borderRadius: 16,
-  border: "1px solid rgba(255,255,255,0.1)",
-  transition: "all 0.3s ease",
-};
-
-const company: CSSProperties = {
-  marginBottom: 5,
-};
-
-const school: CSSProperties = {
-  color: "#aaa",
-};
-
-const roleList: CSSProperties = {
-  paddingLeft: 20,
+  padding: 20,
+  borderRadius: 12,
 };
