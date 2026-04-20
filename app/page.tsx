@@ -99,37 +99,62 @@ export default function Home() {
             <div style={timeline}>
               <div style={line}></div>
 
-              <div
-                style={expCard}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform =
-                    "translateY(-8px) scale(1.02)";
-                  e.currentTarget.style.boxShadow =
-                    "0 0 25px rgba(250,204,21,0.4), 0 0 60px rgba(59,130,246,0.2)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
-              >
-                <span style={year}>2024 - 2027</span>
+              {[
+                {
+                  org: "THE MATRIX TODAY",
+                  school: "Marinduque State University",
+                  roles: [
+                    "Media Assistant Director (2024–2025)",
+                    "Photojournalist (2023–2024)",
+                  ],
+                },
+                {
+                  org: "ICPEP.se",
+                  school: "Marinduque State University",
+                  roles: ["Treasurer (2024–2026)"],
+                },
+                {
+                  org: "NSTP CWTS",
+                  school: "Marinduque State University",
+                  roles: ["Head Documentation (2023–2024)"],
+                },
+                {
+                  org: "Student Volunteer",
+                  school: "Marinduque State University",
+                  roles: ["Member (2023–2026)"],
+                },
+                {
+                  org: "DSWD Cash for Work",
+                  school: "Government Program",
+                  roles: ["Community Work Participant"],
+                },
+              ].map((exp, i) => (
+                <div
+                  key={i}
+                  style={expCard}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform =
+                      "translateY(-10px) scale(1.03)";
+                    e.currentTarget.style.boxShadow =
+                      "0 0 30px rgba(250,204,21,0.4), 0 0 60px rgba(59,130,246,0.2)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "none";
+                  }}
+                >
+                  <h3 style={company}>{exp.org}</h3>
+                  <p style={school}>{exp.school}</p>
 
-                <h3 style={company}>
-                  THE MATRIX TODAY, ICPEP.SE
-                </h3>
-
-                <p style={school}>
-                  Marinduque State University
-                </p>
-
-                <p style={roles}>
-                  Videographer • Photographer • Translator • Assistant
-                </p>
-
-                <p style={desc}>
-                  Media Director, ICPEP.se Treasurer (2024–2026)
-                </p>
-              </div>
+                  <ul style={roleList}>
+                    {exp.roles.map((r, idx) => (
+                      <li key={idx} style={roleItem}>
+                        {r}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -246,6 +271,9 @@ const timeline: CSSProperties = {
   paddingLeft: 40,
   maxWidth: 700,
   margin: "0 auto",
+  display: "flex",
+  flexDirection: "column",
+  gap: 30,
 };
 
 const line: CSSProperties = {
@@ -266,26 +294,21 @@ const expCard: CSSProperties = {
   transition: "all 0.3s ease",
 };
 
-const year: CSSProperties = {
-  color: "#facc15",
-  fontWeight: "bold",
-};
-
 const company: CSSProperties = {
-  marginTop: 10,
+  marginBottom: 5,
 };
 
 const school: CSSProperties = {
   color: "#aaa",
+  marginBottom: 10,
 };
 
-const roles: CSSProperties = {
-  marginTop: 10,
+const roleList: CSSProperties = {
+  paddingLeft: 20,
 };
 
-const desc: CSSProperties = {
-  marginTop: 10,
-  color: "#aaa",
+const roleItem: CSSProperties = {
+  marginBottom: 5,
 };
 
 /* CONTACT */
