@@ -15,7 +15,7 @@ export default function Home() {
   const [animate, setAnimate] = useState(false);
 
   /* ================= TYPEWRITER ================= */
-  const roles = ["Frontend Developer", "UI Designer", "Web Developer"];
+  const roles = ["Frontend Developer", "Web Developer", "UI Designer"];
   const [text, setText] = useState("");
   const [index, setIndex] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
@@ -41,7 +41,7 @@ export default function Home() {
     return () => clearTimeout(timeout);
   }, [subIndex, deleting, index]);
 
-  /* ================= SKILL ANIMATION ================= */
+  /* ================= SKILLS ANIMATION ================= */
   useEffect(() => {
     if (active === "skills") {
       setAnimate(false);
@@ -77,111 +77,104 @@ export default function Home() {
       </div>
 
       {/* ================= HERO ================= */}
-      <div style={heroSection}>
-        <div>
-          <p>Hello, I'm</p>
-
-          <h1 style={heroName}>MG HERNANDEZ</h1>
-
-          <h2 style={heroRole}>
-            {text} <span style={cursor}>|</span>
-          </h2>
-
-          <p style={heroDesc}>
-            Even if my vision isn’t always clear, my goals are. I push myself to
-            learn, improve, and build impactful web applications.
-          </p>
-        </div>
-
-        <div style={imageWrapper}>
-          <img src="/profile.jpg" alt="profile" style={heroImage} />
-        </div>
-      </div>
-
-      {/* ================= ABOUT ================= */}
       {active === "about me" && (
-        <div style={aboutSection}>
-          <h1 style={aboutTitle}>About Me</h1>
+        <div style={heroSection}>
+          <div>
+            <p style={{ color: "#ccc" }}>Hello, I'm</p>
 
-          <p style={aboutText}>
-            I am a passionate Frontend Developer focused on building modern,
-            responsive, and impactful web applications.
-          </p>
+            <h1 style={heroName}>MG HERNANDEZ</h1>
 
-          <p style={aboutText}>
-            I specialize in React, Next.js, and clean UI/UX design.
-          </p>
+            <h2 style={heroRole}>
+              {text} <span style={cursor}>|</span>
+            </h2>
+
+            <p style={heroDesc}>
+              Even if my vision isn’t always clear, my goals are. I push myself
+              to learn, improve, and build impactful web applications.
+            </p>
+
+            {/* BUTTONS */}
+            <div style={{ marginTop: 20, display: "flex", gap: 15 }}>
+              <button style={btnOutline}>View Work</button>
+              <button style={btnPrimary}>Contact Me</button>
+            </div>
+          </div>
+
+          {/* IMAGE CARD */}
+          <div style={imageCard}>
+            <img src="/profile.jpg" alt="profile" style={heroImage} />
+          </div>
         </div>
       )}
 
       {/* ================= SKILLS ================= */}
       {active === "skills" && (
-        <div style={gridStyle}>
-          {[
-            { name: "HTML", icon: <FaHtml5 />, level: 90 },
-            { name: "CSS", icon: <FaCss3Alt />, level: 90 },
-            { name: "JavaScript", icon: <FaJs />, level: 85 },
-            { name: "React", icon: <FaReact />, level: 75 },
-            { name: "Next.js", icon: <SiNextdotjs />, level: 70 },
-            { name: "Tailwind", icon: <SiTailwindcss />, level: 65 },
-          ].map((skill) => (
-            <div key={skill.name} style={{ textAlign: "center" }}>
-              <div style={circleIcon}>{skill.icon}</div>
-              <p>{skill.name}</p>
-
-              <div style={barContainer}>
-                <div
-                  style={{
-                    ...barFill,
-                    width: animate ? `${skill.level}%` : "0%",
-                  }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* ================= EXPERIENCE ================= */}
-      {active === "skills" && (
-        <div style={experienceSection}>
-          <h2 style={expTitle}>Experience</h2>
-
-          <div style={timeline}>
+        <div>
+          <div style={gridStyle}>
             {[
-              {
-                title: "THE MATRIX TODAY",
-                roles: [
-                  "Media Assistant Director (2024–2025)",
-                  "Photojournalist (2023–2024)",
-                ],
-              },
-              {
-                title: "ICPEP.se",
-                roles: ["Treasurer (2024–2026)"],
-              },
-              {
-                title: "NSTP CWTS",
-                roles: ["Head Documentation (2023–2024)"],
-              },
-              {
-                title: "Student Volunteer",
-                roles: ["Member (2023–2026)"],
-              },
-              {
-                title: "DSWD Cash for Work",
-                roles: ["Community Work Participant"],
-              },
-            ].map((exp, i) => (
-              <div key={i} style={expCard}>
-                <h3>{exp.title}</h3>
-                <ul>
-                  {exp.roles.map((r, idx) => (
-                    <li key={idx}>{r}</li>
-                  ))}
-                </ul>
+              { name: "HTML", icon: <FaHtml5 />, level: 90 },
+              { name: "CSS", icon: <FaCss3Alt />, level: 90 },
+              { name: "JavaScript", icon: <FaJs />, level: 85 },
+              { name: "React", icon: <FaReact />, level: 75 },
+              { name: "Next.js", icon: <SiNextdotjs />, level: 70 },
+              { name: "Tailwind", icon: <SiTailwindcss />, level: 65 },
+            ].map((skill) => (
+              <div key={skill.name} style={{ textAlign: "center" }}>
+                <div style={circleIcon}>{skill.icon}</div>
+                <p>{skill.name}</p>
+
+                <div style={barContainer}>
+                  <div
+                    style={{
+                      ...barFill,
+                      width: animate ? `${skill.level}%` : "0%",
+                    }}
+                  />
+                </div>
               </div>
             ))}
+          </div>
+
+          {/* EXPERIENCE */}
+          <div style={experienceSection}>
+            <h2 style={expTitle}>Experience</h2>
+
+            <div style={timeline}>
+              {[
+                {
+                  title: "THE MATRIX TODAY",
+                  roles: [
+                    "Media Assistant Director (2024–2025)",
+                    "Photojournalist (2023–2024)",
+                  ],
+                },
+                {
+                  title: "ICPEP.se",
+                  roles: ["Treasurer (2024–2026)"],
+                },
+                {
+                  title: "NSTP CWTS",
+                  roles: ["Head Documentation (2023–2024)"],
+                },
+                {
+                  title: "Student Volunteer",
+                  roles: ["Member (2023–2026)"],
+                },
+                {
+                  title: "DSWD Cash for Work",
+                  roles: ["Community Work Participant"],
+                },
+              ].map((exp, i) => (
+                <div key={i} style={expCard}>
+                  <h3>{exp.title}</h3>
+                  <ul>
+                    {exp.roles.map((r, idx) => (
+                      <li key={idx}>{r}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}
@@ -229,7 +222,8 @@ const heroSection: CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  marginTop: 50,
+  marginTop: 80,
+  gap: 40,
 };
 
 const heroName: CSSProperties = {
@@ -246,7 +240,6 @@ const heroRole: CSSProperties = {
 };
 
 const cursor: CSSProperties = {
-  marginLeft: 5,
   animation: "blink 1s infinite",
 };
 
@@ -255,33 +248,37 @@ const heroDesc: CSSProperties = {
   marginTop: 10,
 };
 
-const imageWrapper: CSSProperties = {
-  padding: 10,
+const btnPrimary: CSSProperties = {
+  background: "#facc15",
+  color: "#000",
+  border: "none",
+  padding: "10px 20px",
+  borderRadius: 10,
+  cursor: "pointer",
+  fontWeight: "bold",
+};
+
+const btnOutline: CSSProperties = {
+  background: "transparent",
+  color: "#fff",
+  border: "1px solid rgba(255,255,255,0.3)",
+  padding: "10px 20px",
+  borderRadius: 10,
+  cursor: "pointer",
+};
+
+const imageCard: CSSProperties = {
+  padding: 12,
   borderRadius: 20,
   background: "rgba(255,255,255,0.05)",
-  boxShadow: "0 0 30px rgba(250,204,21,0.3)",
+  border: "1px solid rgba(255,255,255,0.1)",
+  boxShadow: "0 0 40px rgba(250,204,21,0.25)",
   animation: "float 4s ease-in-out infinite",
 };
 
 const heroImage: CSSProperties = {
-  width: 250,
+  width: 300,
   borderRadius: 20,
-};
-
-/* ABOUT */
-
-const aboutSection: CSSProperties = {
-  maxWidth: 700,
-  margin: "80px auto",
-  textAlign: "center",
-};
-
-const aboutTitle: CSSProperties = {
-  fontSize: 42,
-};
-
-const aboutText: CSSProperties = {
-  color: "#ccc",
 };
 
 /* SKILLS */
