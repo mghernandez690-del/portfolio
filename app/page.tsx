@@ -14,7 +14,7 @@ export default function Home() {
   const [active, setActive] = useState("about me");
   const [animate, setAnimate] = useState(false);
 
-  /* ================= TYPEWRITER ================= */
+  /* ================= TYPEWRITER FIX ================= */
   const roles = ["Frontend Developer", "Web Developer", "UI Designer"];
   const [text, setText] = useState("");
   const [index, setIndex] = useState(0);
@@ -22,26 +22,29 @@ export default function Home() {
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    if (subIndex === roles[index].length + 1 && !deleting) {
-      setTimeout(() => setDeleting(true), 1000);
-      return;
-    }
-
-    if (subIndex === 0 && deleting) {
-      setDeleting(false);
-      setIndex((prev) => (prev + 1) % roles.length);
-      return;
-    }
-
     const timeout = setTimeout(() => {
-      setSubIndex((prev) => prev + (deleting ? -1 : 1));
-      setText(roles[index].substring(0, subIndex));
-    }, deleting ? 50 : 100);
+      if (!deleting) {
+        setText(roles[index].substring(0, subIndex + 1));
+        setSubIndex((prev) => prev + 1);
+
+        if (subIndex === roles[index].length) {
+          setDeleting(true);
+        }
+      } else {
+        setText(roles[index].substring(0, subIndex - 1));
+        setSubIndex((prev) => prev - 1);
+
+        if (subIndex === 0) {
+          setDeleting(false);
+          setIndex((prev) => (prev + 1) % roles.length);
+        }
+      }
+    }, deleting ? 40 : 90);
 
     return () => clearTimeout(timeout);
   }, [subIndex, deleting, index]);
 
-  /* ================= SKILLS ANIMATION ================= */
+  /* ================= SKILLS ================= */
   useEffect(() => {
     if (active === "skills") {
       setAnimate(false);
@@ -53,7 +56,6 @@ export default function Home() {
 
   return (
     <main style={mainStyle}>
-      {/* LOGO */}
       <div style={logoStyle}>Magnesium</div>
 
       {/* NAV */}
@@ -76,12 +78,11 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ================= HERO ================= */}
+      {/* HERO */}
       {active === "about me" && (
         <div style={heroSection}>
           <div>
-            <p style={{ color: "#ccc" }}>Hello, I'm</p>
-
+            <p>Hello, I'm</p>
             <h1 style={heroName}>MG HERNANDEZ</h1>
 
             <h2 style={heroRole}>
@@ -89,25 +90,22 @@ export default function Home() {
             </h2>
 
             <p style={heroDesc}>
-              Even if my vision isn’t always clear, my goals are. I push myself
-              to learn, improve, and build impactful web applications.
+              Even if my vision isn’t always clear, my goals are.
             </p>
 
-            {/* BUTTONS */}
             <div style={{ marginTop: 20, display: "flex", gap: 15 }}>
               <button style={btnOutline}>View Work</button>
               <button style={btnPrimary}>Contact Me</button>
             </div>
           </div>
 
-          {/* IMAGE CARD */}
           <div style={imageCard}>
-            <img src="/profile.jpg" alt="profile" style={heroImage} />
+            <img src="/profile.jpg" style={heroImage} />
           </div>
         </div>
       )}
 
-      {/* ================= SKILLS ================= */}
+      {/* SKILLS */}
       {active === "skills" && (
         <div>
           <div style={gridStyle}>
@@ -120,7 +118,21 @@ export default function Home() {
               { name: "Tailwind", icon: <SiTailwindcss />, level: 65 },
             ].map((skill) => (
               <div key={skill.name} style={{ textAlign: "center" }}>
-                <div style={circleIcon}>{skill.icon}</div>
+                <div
+                  style={circleIcon}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow =
+                      "0 0 25px #facc15";
+                    e.currentTarget.style.transform = "scale(1.1)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = "none";
+                    e.currentTarget.style.transform = "scale(1)";
+                  }}
+                >
+                  {skill.icon}
+                </div>
+
                 <p>{skill.name}</p>
 
                 <div style={barContainer}>
@@ -136,44 +148,24 @@ export default function Home() {
           </div>
 
           {/* EXPERIENCE */}
-          <div style={experienceSection}>
-            <h2 style={expTitle}>Experience</h2>
+          <div style={{ marginTop: 80 }}>
+            <h2 style={{ textAlign: "center" }}>Experience</h2>
 
-            <div style={timeline}>
-              {[
-                {
-                  title: "THE MATRIX TODAY",
-                  roles: [
-                    "Media Assistant Director (2024–2025)",
-                    "Photojournalist (2023–2024)",
-                  ],
-                },
-                {
-                  title: "ICPEP.se",
-                  roles: ["Treasurer (2024–2026)"],
-                },
-                {
-                  title: "NSTP CWTS",
-                  roles: ["Head Documentation (2023–2024)"],
-                },
-                {
-                  title: "Student Volunteer",
-                  roles: ["Member (2023–2026)"],
-                },
-                {
-                  title: "DSWD Cash for Work",
-                  roles: ["Community Work Participant"],
-                },
-              ].map((exp, i) => (
-                <div key={i} style={expCard}>
-                  <h3>{exp.title}</h3>
-                  <ul>
-                    {exp.roles.map((r, idx) => (
-                      <li key={idx}>{r}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+            <div style={{ maxWidth: 700, margin: "auto" }}>
+              <div style={expCard}>
+                <h3>THE MATRIX TODAY</h3>
+                <ul>
+                  <li>Media Assistant Director (2024–2025)</li>
+                  <li>Photojournalist (2023–2024)</li>
+                </ul>
+              </div>
+
+              <div style={expCard}>
+                <h3>ICPEP.se</h3>
+                <ul>
+                  <li>Treasurer (2024–2026)</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -195,21 +187,16 @@ const logoStyle: CSSProperties = {
   position: "absolute",
   top: 30,
   left: 30,
-  fontWeight: "bold",
 };
 
 const navWrapper: CSSProperties = {
   display: "flex",
   justifyContent: "center",
-  marginBottom: 50,
 };
 
 const navStyle: CSSProperties = {
   display: "flex",
   gap: 25,
-  padding: "12px 25px",
-  borderRadius: 999,
-  background: "rgba(255,255,255,0.05)",
 };
 
 const navItem: CSSProperties = {
@@ -221,22 +208,15 @@ const navItem: CSSProperties = {
 const heroSection: CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
-  alignItems: "center",
   marginTop: 80,
-  gap: 40,
 };
 
 const heroName: CSSProperties = {
   fontSize: 48,
-  fontWeight: "bold",
-  background: "linear-gradient(to right,#60a5fa,#facc15)",
-  WebkitBackgroundClip: "text",
-  color: "transparent",
 };
 
 const heroRole: CSSProperties = {
   color: "#facc15",
-  marginTop: 10,
 };
 
 const cursor: CSSProperties = {
@@ -245,40 +225,24 @@ const cursor: CSSProperties = {
 
 const heroDesc: CSSProperties = {
   color: "#ccc",
-  marginTop: 10,
 };
 
 const btnPrimary: CSSProperties = {
   background: "#facc15",
-  color: "#000",
-  border: "none",
-  padding: "10px 20px",
-  borderRadius: 10,
-  cursor: "pointer",
-  fontWeight: "bold",
+  padding: 10,
 };
 
 const btnOutline: CSSProperties = {
-  background: "transparent",
-  color: "#fff",
-  border: "1px solid rgba(255,255,255,0.3)",
-  padding: "10px 20px",
-  borderRadius: 10,
-  cursor: "pointer",
+  border: "1px solid white",
+  padding: 10,
 };
 
 const imageCard: CSSProperties = {
-  padding: 12,
-  borderRadius: 20,
-  background: "rgba(255,255,255,0.05)",
-  border: "1px solid rgba(255,255,255,0.1)",
-  boxShadow: "0 0 40px rgba(250,204,21,0.25)",
-  animation: "float 4s ease-in-out infinite",
+  boxShadow: "0 0 30px #facc15",
 };
 
 const heroImage: CSSProperties = {
-  width: 300,
-  borderRadius: 20,
+  width: 250,
 };
 
 /* SKILLS */
@@ -287,52 +251,33 @@ const gridStyle: CSSProperties = {
   display: "grid",
   gridTemplateColumns: "repeat(3,1fr)",
   gap: 40,
-  marginTop: 50,
 };
 
 const circleIcon: CSSProperties = {
   width: 80,
   height: 80,
   borderRadius: "50%",
+  background: "#111",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  margin: "0 auto 10px",
-  background: "rgba(255,255,255,0.05)",
+  transition: "0.3s",
 };
 
 const barContainer: CSSProperties = {
   height: 6,
-  background: "rgba(255,255,255,0.1)",
+  background: "#222",
 };
 
 const barFill: CSSProperties = {
   height: "100%",
-  background: "linear-gradient(to right,#60a5fa,#facc15)",
-  transition: "width 1s",
+  background: "gold",
 };
 
 /* EXPERIENCE */
 
-const experienceSection: CSSProperties = {
-  marginTop: 80,
-};
-
-const expTitle: CSSProperties = {
-  textAlign: "center",
-  fontSize: 32,
-};
-
-const timeline: CSSProperties = {
-  maxWidth: 700,
-  margin: "40px auto",
-  display: "flex",
-  flexDirection: "column",
-  gap: 20,
-};
-
 const expCard: CSSProperties = {
-  background: "rgba(255,255,255,0.05)",
+  background: "#111",
   padding: 20,
-  borderRadius: 12,
+  marginTop: 20,
 };
