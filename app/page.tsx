@@ -12,6 +12,7 @@ export default function Home() {
   // TYPEWRITER
   useEffect(() => {
     let i = 0;
+    setText("");
     const interval = setInterval(() => {
       setText(fullText.slice(0, i + 1));
       i++;
@@ -27,6 +28,8 @@ export default function Home() {
     const t = setTimeout(() => setShow(true), 200);
     return () => clearTimeout(t);
   }, [active]);
+
+  const tabs = ["about", "projects", "certs", "contact"];
 
   return (
     <main
@@ -52,35 +55,49 @@ export default function Home() {
             fontSize: "16px",
           }}
         >
-          {["about", "projects", "certs", "contact"].map((item) => (
-            <span
-              key={item}
-              onClick={() => setActive(item)}
-              style={{
-                cursor: "pointer",
-                position: "relative",
-                color: active === item ? "#facc15" : "#ccc",
-                transition: "0.3s",
-              }}
-            >
-              {item}
+          {tabs.map((item) => {
+            const label = item.charAt(0).toUpperCase() + item.slice(1);
 
-              {/* underline */}
-              {active === item && (
+            return (
+              <span
+                key={item}
+                onClick={() => setActive(item)}
+                style={{
+                  cursor: "pointer",
+                  position: "relative",
+                  paddingBottom: "4px",
+                  color: active === item ? "#facc15" : "#ccc",
+                  transition: "0.3s",
+                }}
+                onMouseEnter={(e) => {
+                  if (active !== item) {
+                    e.currentTarget.style.color = "#fff";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (active !== item) {
+                    e.currentTarget.style.color = "#ccc";
+                  }
+                }}
+              >
+                {label}
+
+                {/* UNDERLINE (hover + active) */}
                 <span
                   style={{
                     position: "absolute",
                     left: 0,
-                    bottom: "-4px",
-                    width: "100%",
+                    bottom: 0,
                     height: "2px",
+                    width: active === item ? "100%" : "0%",
                     background: "#facc15",
-                    borderRadius: "10px",
+                    transition: "0.3s",
                   }}
+                  className="underline"
                 />
-              )}
-            </span>
-          ))}
+              </span>
+            );
+          })}
         </div>
       </div>
 
@@ -98,7 +115,7 @@ export default function Home() {
         {active === "about" && (
           <div style={{ display: "flex", gap: "50px", alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ maxWidth: "520px" }}>
-              <p style={{ color: "#aaa", marginBottom: "5px" }}>Hello, I'm</p>
+              <p style={{ color: "#aaa" }}>Hello, I'm</p>
 
               <h1
                 style={{
@@ -107,16 +124,14 @@ export default function Home() {
                   background: "linear-gradient(to right, #60a5fa, #facc15)",
                   WebkitBackgroundClip: "text",
                   color: "transparent",
-                  marginBottom: "10px",
                 }}
               >
                 MG HERNANDEZ
               </h1>
 
-              {/* TYPEWRITER */}
               <h2 style={{ color: "#facc15", height: "30px" }}>
                 {text}
-                <span style={{ marginLeft: "5px", animation: "blink 1s infinite" }}>|</span>
+                <span style={{ marginLeft: "5px" }}>|</span>
               </h2>
 
               <p style={{ color: "#aaa", marginTop: "15px", lineHeight: "1.7" }}>
@@ -127,28 +142,14 @@ export default function Home() {
               <div style={{ marginTop: "25px", display: "flex", gap: "12px" }}>
                 <button
                   onClick={() => setActive("projects")}
-                  style={{
-                    padding: "12px 24px",
-                    border: "1px solid rgba(255,255,255,0.2)",
-                    background: "transparent",
-                    color: "white",
-                    borderRadius: "10px",
-                    transition: "0.3s",
-                  }}
+                  style={btnOutline}
                 >
                   View Work
                 </button>
 
                 <button
                   onClick={() => setActive("contact")}
-                  style={{
-                    padding: "12px 24px",
-                    background: "linear-gradient(to right, #facc15, #fb923c)",
-                    color: "black",
-                    border: "none",
-                    borderRadius: "10px",
-                    fontWeight: "bold",
-                  }}
+                  style={btnPrimary}
                 >
                   Contact Me
                 </button>
@@ -156,22 +157,8 @@ export default function Home() {
             </div>
 
             {/* IMAGE */}
-            <div
-              style={{
-                padding: "12px",
-                borderRadius: "25px",
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                transition: "0.3s",
-              }}
-            >
-              <img
-                src="/profile.png"
-                style={{
-                  width: "320px",
-                  borderRadius: "18px",
-                }}
-              />
+            <div style={cardStyle}>
+              <img src="/profile.png" style={{ width: "320px", borderRadius: "18px" }} />
             </div>
           </div>
         )}
@@ -183,15 +170,7 @@ export default function Home() {
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "20px" }}>
               {["Portfolio Website", "Gowns & Golds", "UI Landing"].map((p) => (
-                <div
-                  key={p}
-                  style={{
-                    padding: "25px",
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    borderRadius: "12px",
-                  }}
-                >
+                <div key={p} style={cardStyle}>
                   <h3>{p}</h3>
                   <p style={{ color: "#aaa", fontSize: "14px" }}>
                     Clean modern project built with Next.js.
@@ -208,12 +187,8 @@ export default function Home() {
             <h2 style={{ fontSize: "32px", marginBottom: "20px" }}>Certificates</h2>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              <div style={{ padding: "15px", background: "rgba(255,255,255,0.05)", borderRadius: "10px" }}>
-                Web Development Certificate
-              </div>
-              <div style={{ padding: "15px", background: "rgba(255,255,255,0.05)", borderRadius: "10px" }}>
-                Frontend Certification
-              </div>
+              <div style={cardStyle}>Web Development Certificate</div>
+              <div style={cardStyle}>Frontend Certification</div>
             </div>
           </div>
         )}
@@ -226,24 +201,21 @@ export default function Home() {
             <input placeholder="Email" style={inputStyle} />
             <textarea placeholder="Message" style={inputStyle} />
 
-            <button
-              style={{
-                width: "100%",
-                padding: "12px",
-                background: "#facc15",
-                color: "black",
-                borderRadius: "10px",
-                fontWeight: "bold",
-              }}
-            >
-              Send
-            </button>
+            <button style={btnPrimary}>Send</button>
           </div>
         )}
       </div>
     </main>
   );
 }
+
+// STYLES
+const cardStyle = {
+  padding: "20px",
+  background: "rgba(255,255,255,0.05)",
+  border: "1px solid rgba(255,255,255,0.1)",
+  borderRadius: "12px",
+};
 
 const inputStyle = {
   width: "100%",
@@ -253,4 +225,21 @@ const inputStyle = {
   border: "1px solid rgba(255,255,255,0.2)",
   background: "transparent",
   color: "white",
+};
+
+const btnPrimary = {
+  padding: "12px 24px",
+  background: "linear-gradient(to right, #facc15, #fb923c)",
+  color: "black",
+  border: "none",
+  borderRadius: "10px",
+  fontWeight: "bold",
+};
+
+const btnOutline = {
+  padding: "12px 24px",
+  border: "1px solid rgba(255,255,255,0.2)",
+  background: "transparent",
+  color: "white",
+  borderRadius: "10px",
 };
