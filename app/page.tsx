@@ -2,62 +2,43 @@
 
 import { useState, useEffect } from "react";
 import type { CSSProperties } from "react";
-
-// ICONS
 import {
-  FaHtml5,
-  FaCss3Alt,
-  FaJs,
-  FaReact,
-  FaServer,
+  FaFacebook,
+  FaInstagram,
+  FaEnvelope,
+  FaMapMarkerAlt,
 } from "react-icons/fa";
-import { SiNextdotjs, SiTailwindcss } from "react-icons/si";
 
 export default function Home() {
   const [active, setActive] = useState("about");
-  const [show, setShow] = useState(true);
   const [text, setText] = useState("");
-  const [animateBars, setAnimateBars] = useState(false);
 
-  const fullText = "Frontend Developer";
+  const roles = ["Frontend Developer", "UI Designer", "Web Developer"];
   const tabs = ["about", "skills", "projects", "certs", "contact"];
 
-  // TYPEWRITER
+  // ✅ FIXED TYPEWRITER (LOOPING)
   useEffect(() => {
     let i = 0;
-    setText("");
+    let current = 0;
+    let deleting = false;
+
     const interval = setInterval(() => {
-      setText(fullText.slice(0, i + 1));
-      i++;
-      if (i === fullText.length) clearInterval(interval);
-    }, 40);
+      const full = roles[current];
+
+      if (!deleting) {
+        setText(full.slice(0, i++));
+        if (i > full.length) deleting = true;
+      } else {
+        setText(full.slice(0, i--));
+        if (i === 0) {
+          deleting = false;
+          current = (current + 1) % roles.length;
+        }
+      }
+    }, 60);
+
     return () => clearInterval(interval);
-  }, [active]);
-
-  // TRANSITION
-  useEffect(() => {
-    setShow(false);
-    const t = setTimeout(() => setShow(true), 200);
-    return () => clearTimeout(t);
-  }, [active]);
-
-  // SKILL ANIMATION
-  useEffect(() => {
-    if (active === "skills") {
-      setAnimateBars(false);
-      setTimeout(() => setAnimateBars(true), 200);
-    }
-  }, [active]);
-
-  const getGlow = (name: string) => {
-    if (name === "HTML") return "0 0 30px #f97316";
-    if (name === "CSS") return "0 0 30px #3b82f6";
-    if (name === "JavaScript") return "0 0 30px #facc15";
-    if (name === "React") return "0 0 30px #22d3ee";
-    if (name === "Next.js") return "0 0 30px #ffffff";
-    if (name === "Tailwind") return "0 0 30px #38bdf8";
-    return "0 0 30px rgba(250,204,21,0.8)";
-  };
+  }, []);
 
   return (
     <main style={mainStyle}>
@@ -67,112 +48,101 @@ export default function Home() {
       {/* NAV */}
       <div style={navWrapper}>
         <div style={navStyle}>
-          {tabs.map((item) => {
-            const label = item.charAt(0).toUpperCase() + item.slice(1);
-            return (
-              <span
-                key={item}
-                onClick={() => setActive(item)}
-                style={{
-                  ...navItem,
-                  color: active === item ? "#facc15" : "#ccc",
-                }}
-              >
-                {label}
-                <span
-                  style={{
-                    ...underline,
-                    width: active === item ? "100%" : "0%",
-                  }}
-                />
-              </span>
-            );
-          })}
+          {tabs.map((t) => (
+            <span
+              key={t}
+              onClick={() => setActive(t)}
+              style={{
+                ...navItem,
+                color: active === t ? "#facc15" : "#ccc",
+              }}
+            >
+              {t.charAt(0).toUpperCase() + t.slice(1)}
+            </span>
+          ))}
         </div>
       </div>
 
-      {/* CONTENT */}
-      <div style={contentStyle(show)}>
-        {/* ABOUT */}
-        {active === "about" && (
-          <div style={aboutWrapper}>
-            <div>
-              <p style={{ color: "#aaa" }}>Hello, I'm</p>
-
-              <h1 style={gradientTitle}>MG HERNANDEZ</h1>
-
-              <h2 style={{ color: "#facc15" }}>{text} |</h2>
-
-              <p style={desc}>
-                Even if my vision isn’t always clear, my goals are. I push myself
-                to learn, improve, and build impactful web applications.
-              </p>
-
-              <div style={{ marginTop: 20 }}>
-                <button style={btnOutline}>View Work</button>
-                <button style={btnPrimary}>Contact Me</button>
-              </div>
-            </div>
-
-            <div style={cardStyle}>
-              <img
-                src="/profile.png"
-                style={{ width: 320, borderRadius: 15 }}
-              />
-            </div>
-          </div>
-        )}
-
-        {/* SKILLS */}
-        {active === "skills" && (
+      {/* HERO */}
+      {active === "about" && (
+        <div style={heroWrapper}>
           <div>
-            <h2 style={skillsTitle}>Skills</h2>
+            <p style={{ color: "#aaa" }}>Hello, I'm</p>
 
-            <div style={gridStyle}>
-              {[
-                { name: "HTML", icon: <FaHtml5 />, level: 90 },
-                { name: "CSS", icon: <FaCss3Alt />, level: 90 },
-                { name: "JavaScript", icon: <FaJs />, level: 75 },
-                { name: "React", icon: <FaReact />, level: 70 },
-                { name: "Next.js", icon: <SiNextdotjs />, level: 65 },
-                { name: "Tailwind", icon: <SiTailwindcss />, level: 55 },
-                { name: "XAMPP", icon: <FaServer />, level: 80 },
-                { name: "Laragon", icon: <FaServer />, level: 80 },
-              ].map((skill) => (
-                <div key={skill.name} style={{ textAlign: "center" }}>
-                  {/* ICON */}
-                  <div
-                    style={circleIcon}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform =
-                        "rotateX(12deg) rotateY(-12deg) scale(1.1)";
-                      e.currentTarget.style.boxShadow = getGlow(skill.name);
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform =
-                        "rotateX(0deg) rotateY(0deg) scale(1)";
-                      e.currentTarget.style.boxShadow = "none";
-                    }}
-                  >
-                    {skill.icon}
-                  </div>
+            <h1 style={title}>MG HERNANDEZ</h1>
 
-                  <p>{skill.name}</p>
+            <h2 style={role}>
+              {text}
+              <span style={{ marginLeft: 5 }}>|</span>
+            </h2>
 
-                  <div style={barContainer}>
-                    <div
-                      style={{
-                        ...barFill,
-                        width: animateBars ? `${skill.level}%` : "0%",
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
+            <p style={desc}>
+              I build clean, modern, and impactful web applications with a
+              passion for design and performance.
+            </p>
+
+            <div style={{ marginTop: 20 }}>
+              <button style={btnOutline}>View Work</button>
+              <button style={btnPrimary}>Contact Me</button>
             </div>
           </div>
-        )}
-      </div>
+
+          {/* IMAGE WITH HOVER */}
+          <div
+            style={imgCard}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform =
+                "rotateY(10deg) rotateX(5deg) scale(1.05)";
+              e.currentTarget.style.boxShadow =
+                "0 0 40px rgba(250,204,21,0.5)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.boxShadow = "none";
+            }}
+          >
+            <img
+              src="/profile.png"
+              style={{ width: 300, borderRadius: 15 }}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* CONTACT */}
+      {active === "contact" && (
+        <div style={contactWrapper}>
+          {/* LEFT CARD */}
+          <div style={contactCard}>
+            <h3>Contact Information</h3>
+
+            <p style={{ marginTop: 20 }}>
+              <FaMapMarkerAlt /> Philippines
+            </p>
+            <p>
+              <FaEnvelope /> mghernandez690@gmail.com
+            </p>
+
+            <div style={socials}>
+              <FaFacebook /> Mg Hernandez
+            </div>
+            <div style={socials}>
+              <FaInstagram /> progra.mg
+            </div>
+          </div>
+
+          {/* FORM */}
+          <div style={form}>
+            <h2>Get in touch</h2>
+
+            <input placeholder="Name" style={input} />
+            <input placeholder="Email" style={input} />
+            <textarea placeholder="Message" style={textarea} />
+
+            <button style={btnPrimary}>Send Message</button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
@@ -183,7 +153,7 @@ const mainStyle: CSSProperties = {
   minHeight: "100vh",
   background: "linear-gradient(135deg,#020617,#07152d,#0b1120)",
   color: "white",
-  padding: "40px",
+  padding: 40,
 };
 
 const logoStyle: CSSProperties = {
@@ -191,60 +161,42 @@ const logoStyle: CSSProperties = {
   left: 40,
   top: 40,
   fontWeight: "bold",
-  fontSize: 18,
-  background: "linear-gradient(to right,#60a5fa,#facc15)",
-  WebkitBackgroundClip: "text",
-  color: "transparent",
 };
 
 const navWrapper: CSSProperties = {
   display: "flex",
   justifyContent: "center",
-  marginBottom: 60,
+  marginBottom: 50,
 };
 
 const navStyle: CSSProperties = {
   display: "flex",
-  gap: 30,
-  padding: "14px 30px",
+  gap: 25,
+  padding: "12px 25px",
   borderRadius: 999,
   background: "rgba(255,255,255,0.05)",
 };
 
 const navItem: CSSProperties = {
   cursor: "pointer",
-  position: "relative",
 };
 
-const underline: CSSProperties = {
-  position: "absolute",
-  height: 2,
-  bottom: -4,
-  left: 0,
-  background: "#facc15",
-  transition: "0.3s",
-};
-
-const contentStyle = (show: boolean): CSSProperties => ({
-  maxWidth: 1100,
-  margin: "0 auto",
-  opacity: show ? 1 : 0,
-  transform: show ? "translateY(0)" : "translateY(20px)",
-  transition: "0.4s",
-});
-
-const aboutWrapper: CSSProperties = {
+const heroWrapper: CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
 };
 
-const gradientTitle: CSSProperties = {
+const title: CSSProperties = {
   fontSize: 60,
   fontWeight: "bold",
   background: "linear-gradient(to right,#60a5fa,#facc15)",
   WebkitBackgroundClip: "text",
   color: "transparent",
+};
+
+const role: CSSProperties = {
+  color: "#facc15",
 };
 
 const desc: CSSProperties = {
@@ -256,7 +208,6 @@ const btnPrimary: CSSProperties = {
   marginLeft: 10,
   padding: "10px 20px",
   background: "#facc15",
-  color: "black",
   borderRadius: 8,
 };
 
@@ -266,50 +217,46 @@ const btnOutline: CSSProperties = {
   borderRadius: 8,
 };
 
-const cardStyle: CSSProperties = {
+const imgCard: CSSProperties = {
   padding: 20,
-  borderRadius: 12,
+  borderRadius: 20,
   background: "rgba(255,255,255,0.05)",
+  transition: "0.4s",
 };
 
-const skillsTitle: CSSProperties = {
-  textAlign: "center",
-  fontSize: 36,
-  marginBottom: 40,
-  background: "linear-gradient(to right,#60a5fa,#facc15)",
-  WebkitBackgroundClip: "text",
-  color: "transparent",
-};
+/* CONTACT */
 
-const gridStyle: CSSProperties = {
-  display: "grid",
-  gridTemplateColumns: "repeat(4,1fr)",
-  gap: 40,
-};
-
-const circleIcon: CSSProperties = {
-  width: 80,
-  height: 80,
-  borderRadius: "50%",
+const contactWrapper: CSSProperties = {
   display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  fontSize: 32,
-  margin: "0 auto 10px",
+  gap: 50,
+};
+
+const contactCard: CSSProperties = {
+  padding: 30,
+  borderRadius: 20,
   background: "rgba(255,255,255,0.05)",
-  transition: "all 0.3s ease",
-  transformStyle: "preserve-3d",
+  width: 300,
 };
 
-const barContainer: CSSProperties = {
-  height: 6,
-  background: "rgba(255,255,255,0.1)",
-  borderRadius: 10,
-  overflow: "hidden",
+const socials: CSSProperties = {
+  marginTop: 10,
 };
 
-const barFill: CSSProperties = {
-  height: "100%",
-  background: "linear-gradient(to right,#60a5fa,#facc15)",
-  transition: "1s",
+const form: CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: 15,
+  width: 400,
+};
+
+const input: CSSProperties = {
+  padding: 10,
+  borderRadius: 8,
+  border: "none",
+};
+
+const textarea: CSSProperties = {
+  padding: 10,
+  height: 100,
+  borderRadius: 8,
 };
