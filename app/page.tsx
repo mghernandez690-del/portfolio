@@ -3,11 +3,15 @@
 import { useState, useEffect } from "react";
 import type { CSSProperties } from "react";
 import {
+  FaHtml5,
+  FaCss3Alt,
+  FaJs,
+  FaReact,
   FaFacebook,
   FaInstagram,
   FaEnvelope,
-  FaMapMarkerAlt,
 } from "react-icons/fa";
+import { SiNextdotjs, SiTailwindcss } from "react-icons/si";
 
 export default function Home() {
   const [active, setActive] = useState("about");
@@ -16,7 +20,7 @@ export default function Home() {
   const roles = ["Frontend Developer", "UI Designer", "Web Developer"];
   const tabs = ["about", "skills", "projects", "certs", "contact"];
 
-  // ✅ FIXED TYPEWRITER (LOOPING)
+  // ✅ FIXED TYPEWRITER LOOP
   useEffect(() => {
     let i = 0;
     let current = 0;
@@ -26,16 +30,18 @@ export default function Home() {
       const full = roles[current];
 
       if (!deleting) {
-        setText(full.slice(0, i++));
-        if (i > full.length) deleting = true;
+        setText(full.slice(0, i + 1));
+        i++;
+        if (i === full.length) deleting = true;
       } else {
-        setText(full.slice(0, i--));
+        setText(full.slice(0, i - 1));
+        i--;
         if (i === 0) {
           deleting = false;
           current = (current + 1) % roles.length;
         }
       }
-    }, 60);
+    }, 80);
 
     return () => clearInterval(interval);
   }, []);
@@ -63,7 +69,9 @@ export default function Home() {
         </div>
       </div>
 
-      {/* HERO */}
+      {/* ================= CONTENT ================= */}
+
+      {/* ABOUT */}
       {active === "about" && (
         <div style={heroWrapper}>
           <div>
@@ -73,12 +81,11 @@ export default function Home() {
 
             <h2 style={role}>
               {text}
-              <span style={{ marginLeft: 5 }}>|</span>
+              <span>|</span>
             </h2>
 
             <p style={desc}>
-              I build clean, modern, and impactful web applications with a
-              passion for design and performance.
+              I build modern, clean, and impactful web applications.
             </p>
 
             <div style={{ marginTop: 20 }}>
@@ -87,59 +94,69 @@ export default function Home() {
             </div>
           </div>
 
-          {/* IMAGE WITH HOVER */}
-          <div
-            style={imgCard}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform =
-                "rotateY(10deg) rotateX(5deg) scale(1.05)";
-              e.currentTarget.style.boxShadow =
-                "0 0 40px rgba(250,204,21,0.5)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.boxShadow = "none";
-            }}
-          >
-            <img
-              src="/profile.png"
-              style={{ width: 300, borderRadius: 15 }}
-            />
+          <div style={imgCard}>
+            <img src="/profile.png" style={{ width: 300, borderRadius: 15 }} />
           </div>
         </div>
       )}
 
-      {/* CONTACT */}
+      {/* ================= SKILLS ================= */}
+      {active === "skills" && (
+        <div>
+          <h2 style={skillsTitle}>Skills</h2>
+
+          <div style={gridStyle}>
+            {[
+              { name: "HTML", icon: <FaHtml5 />, level: 90 },
+              { name: "CSS", icon: <FaCss3Alt />, level: 90 },
+              { name: "JavaScript", icon: <FaJs />, level: 75 },
+              { name: "React", icon: <FaReact />, level: 70 },
+              { name: "Next.js", icon: <SiNextdotjs />, level: 65 },
+              { name: "Tailwind", icon: <SiTailwindcss />, level: 60 },
+            ].map((skill) => (
+              <div key={skill.name} style={{ textAlign: "center" }}>
+                <div style={circleIcon}>{skill.icon}</div>
+                <p>{skill.name}</p>
+
+                <div style={barContainer}>
+                  <div
+                    style={{
+                      ...barFill,
+                      width: `${skill.level}%`,
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ================= CONTACT ================= */}
       {active === "contact" && (
         <div style={contactWrapper}>
-          {/* LEFT CARD */}
           <div style={contactCard}>
-            <h3>Contact Information</h3>
+            <h3>Contact Info</h3>
 
-            <p style={{ marginTop: 20 }}>
-              <FaMapMarkerAlt /> Philippines
-            </p>
             <p>
               <FaEnvelope /> mghernandez690@gmail.com
             </p>
 
-            <div style={socials}>
+            <p>
               <FaFacebook /> Mg Hernandez
-            </div>
-            <div style={socials}>
+            </p>
+
+            <p>
               <FaInstagram /> progra.mg
-            </div>
+            </p>
           </div>
 
-          {/* FORM */}
           <div style={form}>
             <h2>Get in touch</h2>
-
             <input placeholder="Name" style={input} />
             <input placeholder="Email" style={input} />
             <textarea placeholder="Message" style={textarea} />
-
-            <button style={btnPrimary}>Send Message</button>
+            <button style={btnPrimary}>Send</button>
           </div>
         </div>
       )}
@@ -158,8 +175,8 @@ const mainStyle: CSSProperties = {
 
 const logoStyle: CSSProperties = {
   position: "absolute",
-  left: 40,
-  top: 40,
+  top: 30,
+  left: 30,
   fontWeight: "bold",
 };
 
@@ -189,7 +206,6 @@ const heroWrapper: CSSProperties = {
 
 const title: CSSProperties = {
   fontSize: 60,
-  fontWeight: "bold",
   background: "linear-gradient(to right,#60a5fa,#facc15)",
   WebkitBackgroundClip: "text",
   color: "transparent",
@@ -201,7 +217,6 @@ const role: CSSProperties = {
 
 const desc: CSSProperties = {
   color: "#aaa",
-  marginTop: 10,
 };
 
 const btnPrimary: CSSProperties = {
@@ -221,32 +236,62 @@ const imgCard: CSSProperties = {
   padding: 20,
   borderRadius: 20,
   background: "rgba(255,255,255,0.05)",
-  transition: "0.4s",
+};
+
+/* SKILLS */
+
+const skillsTitle: CSSProperties = {
+  textAlign: "center",
+  fontSize: 36,
+  marginBottom: 40,
+};
+
+const gridStyle: CSSProperties = {
+  display: "grid",
+  gridTemplateColumns: "repeat(3,1fr)",
+  gap: 40,
+};
+
+const circleIcon: CSSProperties = {
+  width: 70,
+  height: 70,
+  borderRadius: "50%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  margin: "0 auto 10px",
+  background: "rgba(255,255,255,0.05)",
+  fontSize: 28,
+};
+
+const barContainer: CSSProperties = {
+  height: 6,
+  background: "rgba(255,255,255,0.1)",
+  borderRadius: 10,
+};
+
+const barFill: CSSProperties = {
+  height: "100%",
+  background: "linear-gradient(to right,#60a5fa,#facc15)",
 };
 
 /* CONTACT */
 
 const contactWrapper: CSSProperties = {
   display: "flex",
-  gap: 50,
+  gap: 40,
 };
 
 const contactCard: CSSProperties = {
-  padding: 30,
-  borderRadius: 20,
+  padding: 20,
   background: "rgba(255,255,255,0.05)",
-  width: 300,
-};
-
-const socials: CSSProperties = {
-  marginTop: 10,
+  borderRadius: 15,
 };
 
 const form: CSSProperties = {
   display: "flex",
   flexDirection: "column",
-  gap: 15,
-  width: 400,
+  gap: 10,
 };
 
 const input: CSSProperties = {
@@ -257,6 +302,6 @@ const input: CSSProperties = {
 
 const textarea: CSSProperties = {
   padding: 10,
-  height: 100,
   borderRadius: 8,
+  height: 100,
 };
