@@ -16,20 +16,9 @@ import { SiNextdotjs, SiTailwindcss } from "react-icons/si";
 export default function Home() {
   const [active, setActive] = useState("skills");
   const [animate, setAnimate] = useState(false);
-  const [cursor, setCursor] = useState({ x: 0, y: 0 });
 
   const tabs = ["about", "skills", "projects", "certs", "contact"];
 
-  /* ================= CURSOR GLOW ================= */
-  useEffect(() => {
-    const move = (e: MouseEvent) => {
-      setCursor({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
-  }, []);
-
-  /* ================= SKILL ANIMATION ================= */
   useEffect(() => {
     if (active === "skills") {
       setAnimate(false);
@@ -37,44 +26,8 @@ export default function Home() {
     }
   }, [active]);
 
-  /* ================= SCROLL REVEAL ================= */
-  useEffect(() => {
-    const elements = document.querySelectorAll(".reveal");
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            (entry.target as HTMLElement).style.opacity = "1";
-            (entry.target as HTMLElement).style.transform =
-              "translateY(0)";
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    elements.forEach((el) => observer.observe(el));
-  }, [active]);
-
   return (
     <main style={mainStyle}>
-      {/* CURSOR GLOW */}
-      <div
-        style={{
-          position: "fixed",
-          top: cursor.y - 100,
-          left: cursor.x - 100,
-          width: 200,
-          height: 200,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(250,204,21,0.15), transparent 70%)",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      />
-
       {/* LOGO */}
       <div style={logoStyle}>MG.</div>
 
@@ -88,6 +41,8 @@ export default function Home() {
               style={{
                 ...navItem,
                 color: active === t ? "#facc15" : "#ccc",
+                borderBottom:
+                  active === t ? "2px solid #facc15" : "none",
               }}
             >
               {t.charAt(0).toUpperCase() + t.slice(1)}
@@ -107,21 +62,25 @@ export default function Home() {
               { name: "React", icon: <FaReact />, level: 75 },
               { name: "Next.js", icon: <SiNextdotjs />, level: 70 },
               { name: "Tailwind", icon: <SiTailwindcss />, level: 65 },
-            ].map((skill, i) => (
-              <div
-                key={skill.name}
-                className="reveal"
-                style={{
-                  textAlign: "center",
-                  opacity: 0,
-                  transform: "translateY(40px)",
-                  transition: "all 0.6s ease",
-                  transitionDelay: `${i * 0.1}s`,
-                }}
-              >
-                <div style={circleIcon}>{skill.icon}</div>
+            ].map((skill) => (
+              <div key={skill.name} style={{ textAlign: "center" }}>
+                <div
+                  style={circleIcon}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform =
+                      "translateY(-8px) scale(1.05)";
+                    e.currentTarget.style.boxShadow =
+                      "0 0 20px rgba(250,204,21,0.5)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "none";
+                    e.currentTarget.style.boxShadow = "none";
+                  }}
+                >
+                  {skill.icon}
+                </div>
 
-                <p>{skill.name}</p>
+                <p style={{ marginBottom: 10 }}>{skill.name}</p>
 
                 <div style={barContainer}>
                   <div
@@ -174,13 +133,16 @@ export default function Home() {
               ].map((exp, i) => (
                 <div
                   key={i}
-                  className="reveal"
-                  style={{
-                    ...expCard,
-                    opacity: 0,
-                    transform: "translateY(40px)",
-                    transition: "all 0.6s ease",
-                    transitionDelay: `${i * 0.15}s`,
+                  style={expCard}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform =
+                      "translateY(-8px)";
+                    e.currentTarget.style.boxShadow =
+                      "0 0 25px rgba(250,204,21,0.25)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "none";
+                    e.currentTarget.style.boxShadow = "none";
                   }}
                 >
                   <div style={dot}></div>
@@ -190,12 +152,34 @@ export default function Home() {
 
                   <ul style={roleList}>
                     {exp.roles.map((r, idx) => (
-                      <li key={idx}>{r}</li>
+                      <li key={idx} style={roleItem}>
+                        {r}
+                      </li>
                     ))}
                   </ul>
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= CONTACT ================= */}
+      {active === "contact" && (
+        <div style={contactWrapper}>
+          <div style={contactCard}>
+            <h3>Contact Info</h3>
+            <p><FaEnvelope /> mghernandez690@gmail.com</p>
+            <p><FaFacebook /> Mg Hernandez</p>
+            <p><FaInstagram /> progra.mg</p>
+          </div>
+
+          <div style={form}>
+            <h2>Get in touch</h2>
+            <input placeholder="Name" style={input} />
+            <input placeholder="Email" style={input} />
+            <textarea placeholder="Message" style={textarea} />
+            <button style={btnPrimary}>Send</button>
           </div>
         </div>
       )}
@@ -216,6 +200,7 @@ const logoStyle: CSSProperties = {
   position: "absolute",
   top: 30,
   left: 30,
+  fontWeight: "bold",
 };
 
 const navWrapper: CSSProperties = {
@@ -254,6 +239,7 @@ const circleIcon: CSSProperties = {
   margin: "0 auto 10px",
   background: "rgba(255,255,255,0.05)",
   fontSize: 30,
+  transition: "all 0.3s ease",
 };
 
 const barContainer: CSSProperties = {
@@ -275,6 +261,7 @@ const experienceSection: CSSProperties = {
 };
 
 const expTitle: CSSProperties = {
+  fontSize: 36,
   textAlign: "center",
   marginBottom: 40,
 };
@@ -302,8 +289,8 @@ const dot: CSSProperties = {
   position: "absolute",
   left: -34,
   top: 20,
-  width: 12,
-  height: 12,
+  width: 10,
+  height: 10,
   borderRadius: "50%",
   background: "#facc15",
 };
@@ -313,6 +300,8 @@ const expCard: CSSProperties = {
   background: "rgba(255,255,255,0.05)",
   padding: 25,
   borderRadius: 16,
+  border: "1px solid rgba(255,255,255,0.1)",
+  transition: "all 0.3s ease",
 };
 
 const company: CSSProperties = {
@@ -321,8 +310,52 @@ const company: CSSProperties = {
 
 const school: CSSProperties = {
   color: "#aaa",
+  marginBottom: 10,
 };
 
 const roleList: CSSProperties = {
   paddingLeft: 20,
+};
+
+const roleItem: CSSProperties = {
+  marginBottom: 5,
+};
+
+/* CONTACT */
+
+const contactWrapper: CSSProperties = {
+  display: "flex",
+  gap: 40,
+  marginTop: 80,
+};
+
+const contactCard: CSSProperties = {
+  padding: 20,
+  background: "rgba(255,255,255,0.05)",
+  borderRadius: 15,
+};
+
+const form: CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: 10,
+};
+
+const input: CSSProperties = {
+  padding: 10,
+  borderRadius: 8,
+  border: "none",
+};
+
+const textarea: CSSProperties = {
+  padding: 10,
+  borderRadius: 8,
+  height: 100,
+};
+
+const btnPrimary: CSSProperties = {
+  padding: "10px 20px",
+  background: "#facc15",
+  borderRadius: 8,
+  border: "none",
 };
